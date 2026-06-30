@@ -1,0 +1,35 @@
+---
+import Layout from "../components/Layout.astro";
+import { site } from "../config/site";
+---
+
+<Layout title={`Contact | ${site.name}`} description={`Contact and location for ${site.name}.`}>
+  <section class="page-heading contact-heading">
+    <p class="eyebrow">Find us</p>
+    <h1>Contact</h1>
+    <div class="contact-list">
+      {site.address && <p>{site.address}</p>}
+      {site.phone && <p><a href={`tel:${site.phone}`}>{site.phone}</a></p>}
+      {site.instagramUrl && <p><a href={site.instagramUrl}>Instagram</a></p>}
+    </div>
+    {!site.address && !site.phone && !site.instagramUrl && (
+      <p>Contact details are not configured yet.</p>
+    )}
+  </section>
+
+  {
+    site.googleMapsEmbedUrl && (
+      <section class="map-section">
+        <iframe
+          src={site.googleMapsEmbedUrl}
+          width="100%"
+          height="450"
+          style="border:0"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title={`${site.name} map`}
+        />
+      </section>
+    )
+  }
+</Layout>

@@ -1,0 +1,15 @@
+---
+import Layout from "../components/Layout.astro";
+import MenuRenderer from "../components/MenuRenderer.astro";
+import { site } from "../config/site";
+---
+
+<Layout title={`Menu | ${site.name}`} description={`View the current menu for ${site.name}.`}>
+  <section class="page-heading">
+    <p class="eyebrow">Updated from Google Sheets</p>
+    <h1>Menu</h1>
+    <p>Availability and prices can be changed by staff without a code deploy.</p>
+  </section>
+
+  <MenuRenderer />
+</Layout>

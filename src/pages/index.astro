@@ -1,0 +1,33 @@
+---
+import Layout from "../components/Layout.astro";
+import { site } from "../config/site";
+---
+
+<Layout title={site.name} description={site.description}>
+  <section class="hero">
+    <div class="hero-content">
+      <p class="eyebrow">Neighborhood bar</p>
+      <h1>{site.name}</h1>
+      <p>{site.description}</p>
+      <div class="actions">
+        <a class="button" href="/menu">View Menu</a>
+        <a class="button secondary" href="/reservations">Request a Reservation</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="feature-band" aria-label="Highlights">
+    <div>
+      <h2>Fresh Menu Updates</h2>
+      <p>The posted menu is powered by the owner-managed Google Sheet.</p>
+    </div>
+    <div>
+      <h2>Staff-Confirmed Tables</h2>
+      <p>Reservation requests go straight to staff for confirmation.</p>
+    </div>
+    <div>
+      <h2>Simple Contact</h2>
+      <p>Directions, phone, and social links are ready once configured.</p>
+    </div>
+  </section>
+</Layout>

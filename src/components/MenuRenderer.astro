@@ -1,0 +1,121 @@
+<section id="menu-root" class="menu-root" aria-live="polite">
+  <p class="status-message">Loading menu...</p>
+</section>
+
+<script>
+  type MenuItem = {
+    name: string;
+    description: string;
+    price: string;
+    tags: string[];
+  };
+
+  type MenuCategory = {
+    name: string;
+    sectionOrder: number;
+    items: MenuItem[];
+  };
+
+  type MenuResponse = {
+    updatedAt: string;
+    categories: MenuCategory[];
+    meta: {
+      validRows: number;
+      skippedRows: number;
+    };
+  };
+
+  const root = document.getElementById("menu-root");
+
+  async function loadMenu() {
+    if (!root) return;
+
+    try {
+      const response = await fetch("/api/menu", {
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Menu unavailable");
+      }
+
+      const data = (await response.json()) as MenuResponse;
+      renderMenu(data);
+    } catch {
+      root.textContent = "Menu is temporarily unavailable. Please check back soon or call us.";
+    }
+  }
+
+  function renderMenu(data: MenuResponse) {
+    if (!root) return;
+    root.textContent = "";
+
+    if (!data.categories.length) {
+      root.textContent = "No menu items are available right now.";
+      return;
+    }
+
+    const categories = document.createElement("div");
+    categories.className = "menu-categories";
+
+    for (const category of data.categories) {
+      const section = document.createElement("section");
+      section.className = "menu-category";
+
+      const heading = document.createElement("h2");
+      heading.textContent = category.name;
+      section.appendChild(heading);
+
+      const list = document.createElement("div");
+      list.className = "menu-list";
+
+      for (const item of category.items) {
+        const article = document.createElement("article");
+        article.className = "menu-item";
+
+        const topLine = document.createElement("div");
+        topLine.className = "menu-item-topline";
+
+        const name = document.createElement("h3");
+        name.textContent = item.name;
+
+        const price = document.createElement("p");
+        price.className = "menu-price";
+        price.textContent = item.price;
+
+        topLine.appendChild(name);
+        topLine.appendChild(price);
+        article.appendChild(topLine);
+
+        if (item.description) {
+          const description = document.createElement("p");
+          description.className = "menu-description";
+          description.textContent = item.description;
+          article.appendChild(description);
+        }
+
+        if (item.tags.length) {
+          const tags = document.createElement("ul");
+          tags.className = "menu-tags";
+
+          for (const tag of item.tags) {
+            const tagItem = document.createElement("li");
+            tagItem.textContent = tag;
+            tags.appendChild(tagItem);
+          }
+
+          article.appendChild(tags);
+        }
+
+        list.appendChild(article);
+      }
+
+      section.appendChild(list);
+      categories.appendChild(section);
+    }
+
+    root.appendChild(categories);
+  }
+
+  loadMenu();
+</script>

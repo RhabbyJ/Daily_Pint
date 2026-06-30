@@ -1,0 +1,5 @@
+category,section_order,item_order,name,description,price,tags,available
+Cocktails,1,1,Old Fashioned,"Bourbon, bitters, sugar",$14,"House Classic",TRUE
+Cocktails,1,2,Margarita,"Tequila, lime, orange liqueur",$13,"Popular",TRUE
+Beer,2,1,House Lager,"Draft lager",$7,"Draft",TRUE
+Wine,3,1,House Red,"Glass",$11,,FALSE

@@ -1,0 +1,14 @@
+---
+import { site } from "../config/site";
+---
+
+<footer class="site-footer">
+  <div>
+    <p class="footer-brand">{site.name}</p>
+    {site.address && <p>{site.address}</p>}
+  </div>
+  <div class="footer-links">
+    {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
+    {site.instagramUrl && <a href={site.instagramUrl}>Instagram</a>}
+  </div>
+</footer>

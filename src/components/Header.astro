@@ -1,0 +1,15 @@
+---
+import { site } from "../config/site";
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label={`${site.name} home`}>
+    <span class="brand-mark" aria-hidden="true">DP</span>
+    <span>{site.name}</span>
+  </a>
+  <nav aria-label="Main navigation">
+    <a href="/menu">Menu</a>
+    <a href="/reservations">Request a Reservation</a>
+    <a href="/contact">Contact</a>
+  </nav>
+</header>

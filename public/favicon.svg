@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="The Daily Pint">
+  <rect width="64" height="64" rx="12" fill="#1f2a28"/>
+  <path fill="#d8ad5d" d="M21 14h24l-4 39H25L21 14Zm5 6 2 27h10l2-27H26Z"/>
+  <path fill="#f4eee0" d="M23 14h20v8H23z"/>
+</svg>

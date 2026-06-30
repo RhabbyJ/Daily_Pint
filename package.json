@@ -1,0 +1,25 @@
+{
+  "name": "daily-pint",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm run pages:dev",
+    "astro:dev": "astro dev",
+    "build": "npm run check && astro build",
+    "pages:dev": "npm run build && wrangler pages dev dist --compatibility-date=2026-06-30 --ip 127.0.0.1 --port 8788",
+    "preview": "astro preview",
+    "check": "astro check && tsc --noEmit --pretty false"
+  },
+  "dependencies": {
+    "astro": "latest",
+    "papaparse": "latest"
+  },
+  "devDependencies": {
+    "@astrojs/check": "latest",
+    "@cloudflare/workers-types": "latest",
+    "@types/papaparse": "latest",
+    "typescript": "latest",
+    "wrangler": "^4.106.0"
+  }
+}
