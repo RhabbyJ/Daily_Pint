@@ -755,11 +755,13 @@ nav a:hover {
 }
 
 .reservation-form,
+.events-calendar,
 .map-section {
   padding: 0 0 3rem;
 }
 
 .reservation-form iframe,
+.events-calendar iframe,
 .map-section iframe {
   display: block;
   width: 100%;
@@ -768,6 +770,10 @@ nav a:hover {
   border: 1px solid var(--color-line);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+.events-calendar iframe {
+  min-height: 42rem;
 }
 
 .contact-list {

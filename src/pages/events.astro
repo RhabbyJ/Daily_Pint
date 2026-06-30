@@ -1,0 +1,32 @@
+---
+import Layout from "../components/Layout.astro";
+import { site } from "../config/site";
+---
+
+<Layout title={`Events | ${site.name}`} description={`Upcoming events at ${site.name}.`}>
+  <section class="page-heading">
+    <p class="eyebrow">Updated from Google Calendar</p>
+    <h1>Events</h1>
+    <p>Upcoming events are managed by staff in Google Calendar.</p>
+  </section>
+
+  <section class="events-calendar" aria-label={`${site.name} events calendar`}>
+    {
+      site.googleCalendarEmbedUrl ? (
+        <iframe
+          src={site.googleCalendarEmbedUrl}
+          width="100%"
+          height="720"
+          style="border:0"
+          loading="lazy"
+          title={`${site.name} events calendar`}
+        />
+      ) : (
+        <div class="empty-state">
+          <h2>Events calendar is not configured yet.</h2>
+          <p>Please check back soon.</p>
+        </div>
+      )
+    }
+  </section>
+</Layout>

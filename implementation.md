@@ -1,6 +1,6 @@
 # Implementation Status
 
-This repo contains the local v1 website implementation. The remaining work needs owner access to Google Sheets, Tally, Cloudflare Pages, and GoDaddy.
+This repo contains the local v1 website implementation. The remaining work needs owner access to Google Sheets, Google Calendar, Tally, Cloudflare Pages, and GoDaddy.
 
 ## Built Locally
 
@@ -9,6 +9,7 @@ This repo contains the local v1 website implementation. The remaining work needs
 - Menu loading from a published Google Sheets CSV.
 - Menu validation, normalization, sorting, availability filtering, and string length limits.
 - Client-side menu rendering with text-only sheet values.
+- Events page using a public Google Calendar embed.
 - Reservation request page using a Tally embed.
 - Contact page driven by public environment variables.
 - Cloudflare Pages build configuration.
@@ -33,11 +34,19 @@ This repo contains the local v1 website implementation. The remaining work needs
 - Set the public form ID as `PUBLIC_TALLY_FORM_ID` in Cloudflare Pages.
 - Keep reservation submissions in Tally for v1.
 
+### Google Calendar
+
+- Create a dedicated public Google Calendar for customer-facing events.
+- Add only public event titles, dates, times, locations, and descriptions.
+- Copy the public calendar embed URL.
+- Set the embed URL as `PUBLIC_GOOGLE_CALENDAR_EMBED_URL` in Cloudflare Pages.
+- Keep staff schedules, private planning notes, customer data, and internal costs out of the public calendar.
+
 ### Cloudflare Pages
 
 - Build command: `npm run build`.
 - Build output directory: `dist`.
-- Configure `MENU_CSV_URL`, `PUBLIC_SITE_NAME`, `PUBLIC_SITE_DESCRIPTION`, `PUBLIC_TALLY_FORM_ID`, `PUBLIC_GOOGLE_MAPS_EMBED_URL`, `PUBLIC_BAR_PHONE`, `PUBLIC_BAR_ADDRESS`, and `PUBLIC_BAR_INSTAGRAM_URL`.
+- Configure `MENU_CSV_URL`, `PUBLIC_SITE_NAME`, `PUBLIC_SITE_DESCRIPTION`, `PUBLIC_TALLY_FORM_ID`, `PUBLIC_GOOGLE_CALENDAR_EMBED_URL`, `PUBLIC_GOOGLE_MAPS_EMBED_URL`, `PUBLIC_BAR_PHONE`, `PUBLIC_BAR_ADDRESS`, and `PUBLIC_BAR_INSTAGRAM_URL`.
 
 ### GoDaddy Domain
 
@@ -55,4 +64,5 @@ This repo contains the local v1 website implementation. The remaining work needs
 - No instant reservation confirmation.
 - No payments, deposits, POS integration, SMS reminders, or table inventory.
 - Menu data is public once published as CSV.
+- Event data is public once published through Google Calendar.
 - Reservation data stays outside the website backend.

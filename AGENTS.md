@@ -2,7 +2,7 @@
 
 ## Purpose
 
-Build a public website for The Daily Pint that gives customers current business information, displays a menu controlled by the owner, and collects reservation requests without adding a custom backend, database, payment flow, or staff admin system.
+Build a public website for The Daily Pint that gives customers current business information, displays a menu and events calendar controlled by the owner, and collects reservation requests without adding a custom backend, database, payment flow, or staff admin system.
 
 The reservation call to action must say **Request a Reservation** because requests are staff-confirmed, not instantly guaranteed.
 
@@ -12,6 +12,7 @@ The reservation call to action must say **Request a Reservation** because reques
 - Frontend: Astro static site.
 - Menu source: public Google Sheets CSV from a dedicated customer-facing tab.
 - Menu API: Cloudflare Pages Function at `/api/menu`.
+- Events source: public Google Calendar embed.
 - Reservations: embedded Tally form.
 - Domain: existing GoDaddy domain pointed to Cloudflare Pages.
 - Database: none for v1.
@@ -20,9 +21,11 @@ The reservation call to action must say **Request a Reservation** because reques
 
 ## Required Business Capabilities
 
-- Customers can view the website, menu, reservation request page, and contact information.
+- Customers can view the website, menu, events calendar, reservation request page, and contact information.
 - The owner can update menu categories, items, descriptions, prices, tags, ordering, and availability from Google Sheets.
+- The owner can update public events from Google Calendar.
 - Unavailable menu rows are hidden from the public site.
+- Calendar changes appear on the website without code changes.
 - Customers can submit reservation requests from the website.
 - Owner or staff are notified about reservation requests through Tally.
 - Reservation submissions are stored in Tally, not in the website backend.
@@ -46,6 +49,7 @@ The reservation call to action must say **Request a Reservation** because reques
 - The menu page requests `/api/menu`.
 - `/api/menu` reads the Google Sheets published CSV URL from `MENU_CSV_URL`.
 - The Pages Function validates the CSV headers, normalizes safe text values, filters unavailable or invalid rows, sorts categories and items, and returns grouped JSON.
+- The events page embeds the public Google Calendar.
 - The reservations page embeds a Tally form.
 - Tally stores reservation submissions and emails owner or staff.
 - Private customer data must not pass through the website backend in v1.
@@ -58,6 +62,7 @@ Cloudflare Pages needs these variables:
 - `PUBLIC_SITE_NAME`: public bar name.
 - `PUBLIC_SITE_DESCRIPTION`: public short description.
 - `PUBLIC_TALLY_FORM_ID`: public Tally form ID.
+- `PUBLIC_GOOGLE_CALENDAR_EMBED_URL`: public Google Calendar embed URL for events.
 - `PUBLIC_GOOGLE_MAPS_EMBED_URL`: public Google Maps embed URL.
 - `PUBLIC_BAR_PHONE`: public phone number.
 - `PUBLIC_BAR_ADDRESS`: public address.
@@ -92,6 +97,20 @@ Operational rules:
 - Restrict edit access to the owner and trusted manager.
 
 Never publish customer data, supplier costs, margins, revenue, staff notes, private links, passwords, API keys, or reservation data in the menu sheet.
+
+## Google Calendar Event Rules
+
+Create a dedicated Google Calendar for customer-facing events and make only that calendar public or embeddable.
+
+Operational rules:
+
+- Only public event information belongs on the calendar.
+- Owner or trusted staff manage event title, date, time, location, and description in Google Calendar.
+- The website uses the public Google Calendar embed URL.
+- Calendar edits should appear on the website without code changes.
+- Keep private planning notes, staff schedules, customer data, and internal event costs out of the public calendar.
+
+Do not expose private Google Calendar links, admin access, or customer data.
 
 ## Menu API Requirements
 
@@ -181,6 +200,8 @@ GoDaddy DNS:
 - Unavailable and invalid rows are hidden.
 - Categories and items sort correctly.
 - Tags render correctly.
+- Events page embeds the public Google Calendar.
+- Google Calendar edits appear on the website.
 - Reservation page embeds the Tally form.
 - Reservation copy clearly says requests are staff-confirmed.
 - Test reservation sends owner or staff notification.
@@ -195,7 +216,9 @@ GoDaddy DNS:
 The MVP is complete when:
 
 - The owner can edit the public menu from the `Website Menu` Google Sheet.
+- The owner can edit public events from Google Calendar.
 - Website menu changes do not require code changes.
+- Website event changes do not require code changes.
 - Rows where `available` is not `TRUE` are hidden.
 - Customers can submit reservation requests from the website.
 - Owner or staff receive reservation notifications.
