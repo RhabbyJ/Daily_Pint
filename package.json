@@ -8,10 +8,13 @@
     "astro:dev": "astro dev",
     "build": "npm run check && astro build",
     "pages:dev": "npm run build && wrangler pages dev dist --compatibility-date=2026-06-30 --ip 127.0.0.1 --port 8788",
-    "preview": "astro preview",
-    "check": "astro check && tsc --noEmit --pretty false"
+    "preview": "npm run build && wrangler dev",
+    "check": "astro check && tsc --noEmit --pretty false",
+    "generate-types": "wrangler types",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
+    "@astrojs/cloudflare": "^14.0.2",
     "astro": "latest",
     "papaparse": "latest"
   },
