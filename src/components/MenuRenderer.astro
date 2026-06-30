@@ -42,7 +42,7 @@
       const data = (await response.json()) as MenuResponse;
       renderMenu(data);
     } catch {
-      root.textContent = "Menu is temporarily unavailable. Please check back soon or call us.";
+      renderMessage("Menu is temporarily unavailable.", "Please check back soon or call us.");
     }
   }
 
@@ -51,7 +51,7 @@
     root.textContent = "";
 
     if (!data.categories.length) {
-      root.textContent = "No menu items are available right now.";
+      renderMessage("No menu items are available right now.", "Please check back soon.");
       return;
     }
 
@@ -115,6 +115,24 @@
     }
 
     root.appendChild(categories);
+  }
+
+  function renderMessage(headingText: string, bodyText: string) {
+    if (!root) return;
+    root.textContent = "";
+
+    const message = document.createElement("div");
+    message.className = "empty-state";
+
+    const heading = document.createElement("h2");
+    heading.textContent = headingText;
+
+    const body = document.createElement("p");
+    body.textContent = bodyText;
+
+    message.appendChild(heading);
+    message.appendChild(body);
+    root.appendChild(message);
   }
 
   loadMenu();

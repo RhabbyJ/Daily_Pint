@@ -3,31 +3,116 @@ import Layout from "../components/Layout.astro";
 import { site } from "../config/site";
 ---
 
-<Layout title={site.name} description={site.description}>
-  <section class="hero">
-    <div class="hero-content">
-      <p class="eyebrow">Neighborhood bar</p>
+<Layout title={site.name} description={site.description} pageClass="home-page">
+  <section class="hero landing-hero" aria-label={`${site.name} welcome`}>
+    <div class="hero-glow" aria-hidden="true"></div>
+    <div class="hero-content hero-intro">
+      <p class="eyebrow">Neighborhood bar · cold pints · warm lights</p>
       <h1>{site.name}</h1>
-      <p>{site.description}</p>
+      <p class="hero-lede">
+        {site.description} Settle into a polished barroom built for golden-hour pours,
+        late conversations, and the kind of regulars who know the bartender by name.
+      </p>
       <div class="actions">
         <a class="button" href="/menu">View Menu</a>
         <a class="button secondary" href="/reservations">Request a Reservation</a>
       </div>
     </div>
+    <div class="hero-rail hero-intro" aria-label="Bar highlights">
+      <p>Open for walk-ins</p>
+      <p>Rotating drafts</p>
+      <p>Staff-confirmed tables</p>
+    </div>
+    <a class="scroll-cue" href="#experience" aria-label="Explore the bar">
+      <span></span>
+    </a>
   </section>
 
-  <section class="feature-band" aria-label="Highlights">
-    <div>
-      <h2>Fresh Menu Updates</h2>
-      <p>The posted menu is powered by the owner-managed Google Sheet.</p>
-    </div>
-    <div>
-      <h2>Staff-Confirmed Tables</h2>
-      <p>Reservation requests go straight to staff for confirmation.</p>
-    </div>
-    <div>
-      <h2>Simple Contact</h2>
-      <p>Directions, phone, and social links are ready once configured.</p>
+  <section class="marquee-strip" aria-label="Daily Pint atmosphere">
+    <div class="marquee-track">
+      <span>Fresh drafts</span>
+      <span>Classic cocktails</span>
+      <span>Low lights</span>
+      <span>Easy tables</span>
+      <span>Good company</span>
+      <span>Fresh drafts</span>
+      <span>Classic cocktails</span>
+      <span>Low lights</span>
+      <span>Easy tables</span>
+      <span>Good company</span>
     </div>
   </section>
+
+  <section id="experience" class="home-section experience-section">
+    <div class="section-kicker reveal">Behind the bar</div>
+    <div class="section-copy reveal">
+      <h2>A room with the pace of a neighborhood ritual.</h2>
+      <p>
+        The Daily Pint keeps the night simple: a clean beer list, sharp cocktails,
+        familiar seats, and an atmosphere that feels considered without feeling precious.
+      </p>
+    </div>
+    <div class="feature-grid">
+      <article class="feature-card reveal">
+        <span>01</span>
+        <h3>Menus move with the bar</h3>
+        <p>The public menu reflects the owner-managed sheet, so unavailable rows stay hidden.</p>
+      </article>
+      <article class="feature-card reveal">
+        <span>02</span>
+        <h3>Built for one more round</h3>
+        <p>Deep wood, brass warmth, and gentle motion give the page the same pull as the room.</p>
+      </article>
+      <article class="feature-card reveal">
+        <span>03</span>
+        <h3>Requests, not promises</h3>
+        <p>Guests can request a table while the copy stays clear that staff confirms every reservation.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="home-section pours-section">
+    <div class="pours-image reveal" aria-hidden="true"></div>
+    <div class="pours-content reveal">
+      <p class="eyebrow">What the night tastes like</p>
+      <h2>Drafts with a clean finish. Cocktails with a steady hand.</h2>
+      <div class="pours-list" aria-label="Featured bar offerings">
+        <p><span>House Lager</span><strong>Crisp · cold · reliable</strong></p>
+        <p><span>Gold Rush</span><strong>Bourbon · lemon · honey</strong></p>
+        <p><span>Seasonal Tap</span><strong>Rotates with the sheet</strong></p>
+      </div>
+      <a class="text-link" href="/menu">Explore the current menu</a>
+    </div>
+  </section>
+
+  <section class="reservation-cta reveal">
+    <p class="eyebrow">Save the table</p>
+    <h2>Bring the group. We will confirm the details.</h2>
+    <p>
+      Send a request with your date, time, and party size. Reservations are not confirmed
+      until staff contacts you.
+    </p>
+    <a class="button" href="/reservations">Request a Reservation</a>
+  </section>
+
+  <script is:inline>
+    document.documentElement.classList.add("js-enabled");
+
+    const revealItems = document.querySelectorAll(".reveal");
+    const revealObserver = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          }
+        }
+      },
+      { threshold: 0.18 },
+    );
+
+    for (const item of revealItems) {
+      revealObserver.observe(item);
+    }
+  </script>
 </Layout>

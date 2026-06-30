@@ -1,5 +1,14 @@
 ---
 import { site } from "../config/site";
+
+const navItems = [
+  { href: "/menu", label: "Menu" },
+  { href: "/reservations", label: "Request a Reservation" },
+  { href: "/contact", label: "Contact" },
+];
+
+const pathname = Astro.url.pathname;
+const isCurrent = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
 ---
 
 <header class="site-header">
@@ -8,8 +17,16 @@ import { site } from "../config/site";
     <span>{site.name}</span>
   </a>
   <nav aria-label="Main navigation">
-    <a href="/menu">Menu</a>
-    <a href="/reservations">Request a Reservation</a>
-    <a href="/contact">Contact</a>
+    {
+      navItems.map((item) => (
+        <a
+          href={item.href}
+          class={isCurrent(item.href) ? "is-active" : undefined}
+          aria-current={isCurrent(item.href) ? "page" : undefined}
+        >
+          {item.label}
+        </a>
+      ))
+    }
   </nav>
 </header>

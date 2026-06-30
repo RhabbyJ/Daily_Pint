@@ -6,9 +6,10 @@ import "../styles/global.css";
 interface Props {
   title: string;
   description: string;
+  pageClass?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, pageClass = "" } = Astro.props;
 ---
 
 <!doctype html>
@@ -16,12 +17,18 @@ const { title, description } = Astro.props;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1f2a28" />
+    <meta name="theme-color" content="#071a18" />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body>
+  <body class={pageClass}>
     <Header />
     <main>
       <slot />
