@@ -1,5 +1,6 @@
 ---
 import Layout from "../components/Layout.astro";
+import EventsList from "../components/EventsList.astro";
 import { site } from "../config/site";
 ---
 
@@ -9,6 +10,8 @@ import { site } from "../config/site";
     <h1>Events</h1>
     <p>Upcoming events are managed by staff in Google Calendar.</p>
   </section>
+
+  <EventsList />
 
   <section class="events-calendar" aria-label={`${site.name} events calendar`}>
     {

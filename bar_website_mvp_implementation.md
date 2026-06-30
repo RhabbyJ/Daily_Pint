@@ -12,7 +12,7 @@ The reservation call to action must say **Request a Reservation** because reques
 - Frontend: Astro static site.
 - Menu source: public Google Sheets CSV from a dedicated customer-facing tab.
 - Menu API: Cloudflare Pages Function at `/api/menu`.
-- Events source: public Google Calendar embed.
+- Events source: public Google Calendar embed and public iCal feed.
 - Reservations: embedded Tally form.
 - Domain: existing GoDaddy domain pointed to Cloudflare Pages.
 - Database: none for v1.
@@ -26,6 +26,7 @@ The reservation call to action must say **Request a Reservation** because reques
 - The owner can update public events from Google Calendar.
 - Unavailable menu rows are hidden from the public site.
 - Calendar changes appear on the website without code changes.
+- Upcoming events appear as a list with date, title, description, and location when available.
 - Customers can submit reservation requests from the website.
 - Owner or staff are notified about reservation requests through Tally.
 - Reservation submissions are stored in Tally, not in the website backend.
@@ -49,7 +50,8 @@ The reservation call to action must say **Request a Reservation** because reques
 - The menu page requests `/api/menu`.
 - `/api/menu` reads the Google Sheets published CSV URL from `MENU_CSV_URL`.
 - The Pages Function validates the CSV headers, normalizes safe text values, filters unavailable or invalid rows, sorts categories and items, and returns grouped JSON.
-- The events page embeds the public Google Calendar.
+- The events page requests `/api/events` for an upcoming-events list and also embeds the public Google Calendar.
+- `/api/events` derives the public iCal feed from the configured Google Calendar embed URL, normalizes event text, filters past events, and returns JSON.
 - The reservations page embeds a Tally form.
 - Tally stores reservation submissions and emails owner or staff.
 - Private customer data must not pass through the website backend in v1.
@@ -107,10 +109,33 @@ Operational rules:
 - Only public event information belongs on the calendar.
 - Owner or trusted staff manage event title, date, time, location, and description in Google Calendar.
 - The website uses the public Google Calendar embed URL.
+- The website derives a public iCal feed from the embed URL for the upcoming-events list.
 - Calendar edits should appear on the website without code changes.
 - Keep private planning notes, staff schedules, customer data, and internal event costs out of the public calendar.
 
 Do not expose private Google Calendar links, admin access, or customer data.
+
+## Events API Requirements
+
+Endpoint: `GET /api/events`.
+
+Required behavior:
+
+- Fetch the public Google Calendar iCal feed derived from `PUBLIC_GOOGLE_CALENDAR_EMBED_URL`.
+- Return upcoming events as JSON.
+- Include event date, title, description, and location when available.
+- Filter past events.
+- Limit the number of returned events.
+- Limit string lengths before returning data.
+- Return JSON only.
+- Never return or render raw HTML from calendar fields.
+- Use public caching with a short revalidation window.
+
+Customer-facing error handling:
+
+- If the event list cannot load, show a simple temporary-unavailable message above the calendar.
+- If no upcoming events are listed, show a simple empty state above the calendar.
+- Keep the embedded Google Calendar visible when configured.
 
 ## Menu API Requirements
 
@@ -201,6 +226,7 @@ GoDaddy DNS:
 - Categories and items sort correctly.
 - Tags render correctly.
 - Events page embeds the public Google Calendar.
+- Upcoming-events list shows date, title, description, and location when available.
 - Google Calendar edits appear on the website.
 - Reservation page embeds the Tally form.
 - Reservation copy clearly says requests are staff-confirmed.
@@ -219,6 +245,7 @@ The MVP is complete when:
 - The owner can edit public events from Google Calendar.
 - Website menu changes do not require code changes.
 - Website event changes do not require code changes.
+- Upcoming events are available as a list and as a calendar.
 - Rows where `available` is not `TRUE` are hidden.
 - Customers can submit reservation requests from the website.
 - Owner or staff receive reservation notifications.

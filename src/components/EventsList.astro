@@ -1,0 +1,149 @@
+<section id="events-list-root" class="events-list-root" aria-live="polite">
+  <p class="status-message">Loading upcoming events...</p>
+</section>
+
+<script>
+  type CalendarEvent = {
+    id: string;
+    title: string;
+    description: string;
+    location: string;
+    start: string;
+    end: string;
+    allDay: boolean;
+    timeZone: string;
+  };
+
+  type EventsResponse = {
+    updatedAt: string;
+    events: CalendarEvent[];
+    meta: {
+      validEvents: number;
+      skippedEvents: number;
+    };
+  };
+
+  const eventsRoot = document.getElementById("events-list-root");
+
+  async function loadEvents() {
+    if (!eventsRoot) return;
+
+    try {
+      const response = await fetch("/api/events", {
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Events unavailable");
+      }
+
+      const data = (await response.json()) as EventsResponse;
+      renderEvents(data.events);
+    } catch {
+      renderEventsMessage("Events are temporarily unavailable.", "Please check the calendar below.");
+    }
+  }
+
+  function renderEvents(events: CalendarEvent[]) {
+    if (!eventsRoot) return;
+    eventsRoot.textContent = "";
+
+    if (!events.length) {
+      renderEventsMessage("No upcoming events are listed right now.", "Please check the calendar below.");
+      return;
+    }
+
+    const heading = document.createElement("h2");
+    heading.className = "events-list-heading";
+    heading.textContent = "Upcoming Events";
+    eventsRoot.appendChild(heading);
+
+    const list = document.createElement("div");
+    list.className = "events-list";
+
+    for (const event of events) {
+      const article = document.createElement("article");
+      article.className = "event-list-item";
+
+      const date = document.createElement("time");
+      date.className = "event-date";
+      date.dateTime = event.start;
+      date.textContent = formatEventDate(event);
+
+      const content = document.createElement("div");
+      content.className = "event-content";
+
+      const title = document.createElement("h3");
+      title.textContent = event.title;
+      content.appendChild(title);
+
+      if (event.description) {
+        const description = document.createElement("p");
+        description.className = "event-description";
+        description.textContent = event.description;
+        content.appendChild(description);
+      }
+
+      if (event.location) {
+        const location = document.createElement("p");
+        location.className = "event-location";
+        location.textContent = event.location;
+        content.appendChild(location);
+      }
+
+      article.appendChild(date);
+      article.appendChild(content);
+      list.appendChild(article);
+    }
+
+    eventsRoot.appendChild(list);
+  }
+
+  function renderEventsMessage(headingText: string, bodyText: string) {
+    if (!eventsRoot) return;
+    eventsRoot.textContent = "";
+
+    const message = document.createElement("div");
+    message.className = "empty-state";
+
+    const heading = document.createElement("h2");
+    heading.textContent = headingText;
+
+    const body = document.createElement("p");
+    body.textContent = bodyText;
+
+    message.appendChild(heading);
+    message.appendChild(body);
+    eventsRoot.appendChild(message);
+  }
+
+  function formatEventDate(event: CalendarEvent): string {
+    if (event.allDay) {
+      const date = new Date(`${event.start}T00:00:00Z`);
+      return new Intl.DateTimeFormat(undefined, {
+        weekday: "short",
+        month: "short",
+        day: "numeric",
+        timeZone: "UTC",
+      }).format(date);
+    }
+
+    const date = new Date(event.start);
+    const timeZone = event.timeZone || "America/Los_Angeles";
+    const dateText = new Intl.DateTimeFormat(undefined, {
+      weekday: "short",
+      month: "short",
+      day: "numeric",
+      timeZone,
+    }).format(date);
+    const timeText = new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone,
+    }).format(date);
+
+    return `${dateText} at ${timeText}`;
+  }
+
+  loadEvents();
+</script>

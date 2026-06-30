@@ -754,6 +754,73 @@ nav a:hover {
   border-radius: 999px;
 }
 
+.events-list-root {
+  padding: 0 0 2.5rem;
+}
+
+.events-list-heading {
+  margin: 0 0 1rem;
+  color: var(--color-cream);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 2.45rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.events-list {
+  display: grid;
+  gap: 1px;
+  overflow: hidden;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  background: var(--color-line);
+  box-shadow: var(--shadow-soft);
+}
+
+.event-list-item {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.24fr) minmax(0, 1fr);
+  gap: 1rem;
+  padding: 1.15rem;
+  color: var(--color-ink);
+  background: var(--color-paper);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.event-list-item:hover {
+  background: #fff2da;
+  transform: translateX(2px);
+}
+
+.event-date {
+  color: var(--color-wine);
+  font-size: 0.9rem;
+  font-weight: 900;
+}
+
+.event-content h3,
+.event-description,
+.event-location {
+  margin: 0;
+}
+
+.event-content h3 {
+  font-size: 1.08rem;
+}
+
+.event-description {
+  max-width: 52rem;
+  margin-top: 0.35rem;
+  color: var(--color-muted);
+}
+
+.event-location {
+  margin-top: 0.5rem;
+  color: var(--color-wine);
+  font-size: 0.82rem;
+  font-weight: 900;
+}
+
 .reservation-form,
 .events-calendar,
 .map-section {
@@ -1063,6 +1130,11 @@ nav a:hover {
   .menu-item-topline {
     grid-template-columns: 1fr;
     gap: 0.2rem;
+  }
+
+  .event-list-item {
+    grid-template-columns: 1fr;
+    gap: 0.4rem;
   }
 
   .footer-links {
