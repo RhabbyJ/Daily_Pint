@@ -6,6 +6,6 @@ export const site = {
   phone: import.meta.env.PUBLIC_BAR_PHONE || "",
   address: import.meta.env.PUBLIC_BAR_ADDRESS || "",
   instagramUrl: import.meta.env.PUBLIC_BAR_INSTAGRAM_URL || "",
-  tallyFormId: import.meta.env.PUBLIC_TALLY_FORM_ID || "",
+  tallyFormId: import.meta.env.PUBLIC_TALLY_FORM_ID || "lb5ZkX",
   googleMapsEmbedUrl: import.meta.env.PUBLIC_GOOGLE_MAPS_EMBED_URL || "",
 };
