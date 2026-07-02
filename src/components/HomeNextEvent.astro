@@ -1,0 +1,202 @@
+<section id="home-next-event-root" class="home-next-event" aria-live="polite">
+  <article class="next-event-card is-loading">
+    <p class="next-event-status">Loading the next event...</p>
+  </article>
+</section>
+
+<script>
+  type CalendarEvent = {
+    id: string;
+    title: string;
+    description: string;
+    location: string;
+    start: string;
+    end: string;
+    allDay: boolean;
+    timeZone: string;
+  };
+
+  type EventsResponse = {
+    updatedAt: string;
+    events: CalendarEvent[];
+    meta: {
+      validEvents: number;
+      skippedEvents: number;
+    };
+  };
+
+  type EventDateParts = {
+    weekday: string;
+    month: string;
+    day: string;
+    time: string;
+  };
+
+  const nextEventRoot = document.getElementById("home-next-event-root");
+
+  async function loadNextEvent() {
+    if (!nextEventRoot) return;
+
+    try {
+      const response = await fetch("/api/events", {
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Events unavailable");
+      }
+
+      const data = (await response.json()) as EventsResponse;
+      const [nextEvent] = data.events;
+
+      if (!nextEvent) {
+        renderNextEventMessage("No public events are listed right now.", "The full calendar will update when a new event is added.");
+        return;
+      }
+
+      renderNextEvent(nextEvent);
+    } catch {
+      renderNextEventMessage("Events are temporarily unavailable.", "Please check the calendar again soon.");
+    }
+  }
+
+  function renderNextEvent(event: CalendarEvent) {
+    if (!nextEventRoot) return;
+    nextEventRoot.textContent = "";
+
+    const article = document.createElement("article");
+    article.className = "next-event-card";
+
+    const date = document.createElement("time");
+    date.className = "next-event-date-block";
+    date.dateTime = event.start;
+
+    const parts = formatEventDateParts(event);
+
+    const weekday = document.createElement("span");
+    weekday.textContent = parts.weekday;
+
+    const day = document.createElement("strong");
+    day.textContent = parts.day;
+
+    const month = document.createElement("small");
+    month.textContent = parts.month;
+
+    date.appendChild(weekday);
+    date.appendChild(day);
+    date.appendChild(month);
+
+    const body = document.createElement("div");
+    body.className = "next-event-body";
+
+    const label = document.createElement("p");
+    label.className = "next-event-label";
+    label.textContent = "Next event";
+
+    const title = document.createElement("h3");
+    title.textContent = event.title;
+
+    body.appendChild(label);
+    body.appendChild(title);
+
+    if (event.description) {
+      const description = document.createElement("p");
+      description.className = "next-event-description";
+      description.textContent = event.description;
+      body.appendChild(description);
+    }
+
+    const meta = document.createElement("div");
+    meta.className = "next-event-meta";
+
+    const time = document.createElement("p");
+    time.textContent = parts.time;
+    meta.appendChild(time);
+
+    if (event.location) {
+      const location = document.createElement("p");
+      location.textContent = event.location;
+      meta.appendChild(location);
+    }
+
+    body.appendChild(meta);
+    article.appendChild(date);
+    article.appendChild(body);
+    nextEventRoot.appendChild(article);
+  }
+
+  function renderNextEventMessage(headingText: string, bodyText: string) {
+    if (!nextEventRoot) return;
+    nextEventRoot.textContent = "";
+
+    const article = document.createElement("article");
+    article.className = "next-event-card next-event-card-empty";
+
+    const body = document.createElement("div");
+    body.className = "next-event-body";
+
+    const label = document.createElement("p");
+    label.className = "next-event-label";
+    label.textContent = "Next event";
+
+    const heading = document.createElement("h3");
+    heading.textContent = headingText;
+
+    const copy = document.createElement("p");
+    copy.className = "next-event-description";
+    copy.textContent = bodyText;
+
+    body.appendChild(label);
+    body.appendChild(heading);
+    body.appendChild(copy);
+    article.appendChild(body);
+    nextEventRoot.appendChild(article);
+  }
+
+  function formatEventDateParts(event: CalendarEvent): EventDateParts {
+    if (event.allDay) {
+      const date = new Date(`${event.start}T00:00:00Z`);
+      return {
+        weekday: new Intl.DateTimeFormat(undefined, {
+          weekday: "short",
+          timeZone: "UTC",
+        }).format(date),
+        month: new Intl.DateTimeFormat(undefined, {
+          month: "short",
+          timeZone: "UTC",
+        }).format(date),
+        day: new Intl.DateTimeFormat(undefined, {
+          day: "numeric",
+          timeZone: "UTC",
+        }).format(date),
+        time: "All day",
+      };
+    }
+
+    const date = new Date(event.start);
+    const timeZone = event.timeZone || "America/Los_Angeles";
+
+    return {
+      weekday: new Intl.DateTimeFormat(undefined, {
+        weekday: "short",
+        timeZone,
+      }).format(date),
+      month: new Intl.DateTimeFormat(undefined, {
+        month: "short",
+        timeZone,
+      }).format(date),
+      day: new Intl.DateTimeFormat(undefined, {
+        day: "numeric",
+        timeZone,
+      }).format(date),
+      time: new Intl.DateTimeFormat(undefined, {
+        weekday: "long",
+        hour: "numeric",
+        minute: "2-digit",
+        timeZone,
+      }).format(date),
+    };
+  }
+
+  loadNextEvent();
+</script>

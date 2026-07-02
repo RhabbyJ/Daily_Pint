@@ -1,4 +1,5 @@
 ---
+import HomeNextEvent from "../components/HomeNextEvent.astro";
 import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
 import { site } from "../config/site";
@@ -33,45 +34,51 @@ import { site } from "../config/site";
   </section>
 
   <section id="visit-flow" class="home-section visit-flow-section">
-    <div class="section-kicker reveal">Start here</div>
-    <div class="section-copy reveal">
+    <div class="home-section-heading reveal">
       <h2>Start with what you need tonight.</h2>
       <p>
-        The essentials stay easy to reach: what is pouring, what is planned,
-        how to request a table, and how to find the bar.
+        Menu, events, reservations, and directions stay easy to reach without
+        crowding the page.
       </p>
     </div>
-    <div class="flow-grid">
-      <a class="flow-card reveal" href="/menu">
-        <Icon name="menu" />
-        <span>01</span>
-        <h3>Menu</h3>
-        <p>Current pours, cocktails, plates, prices, and notes.</p>
+    <div class="pathway-grid">
+      <a class="pathway-card reveal" href="/menu">
+        <span class="pathway-icon"><Icon name="menu" /></span>
+        <span class="pathway-copy">
+          <h3>Menu</h3>
+          <p>Current pours, cocktails, plates, prices, and notes.</p>
+        </span>
+        <Icon name="arrow-right" class="pathway-arrow" />
       </a>
-      <a class="flow-card reveal" href="/events">
-        <Icon name="calendar" />
-        <span>02</span>
-        <h3>Events</h3>
-        <p>Upcoming nights first, then the full calendar view.</p>
+      <a class="pathway-card reveal" href="/events">
+        <span class="pathway-icon"><Icon name="calendar" /></span>
+        <span class="pathway-copy">
+          <h3>Events</h3>
+          <p>The next night out, then the full calendar view.</p>
+        </span>
+        <Icon name="arrow-right" class="pathway-arrow" />
       </a>
-      <a class="flow-card reveal" href="/reservations">
-        <Icon name="users" />
-        <span>03</span>
-        <h3>Reservations</h3>
-        <p>Send a request. Staff will confirm the details.</p>
+      <a class="pathway-card reveal" href="/reservations">
+        <span class="pathway-icon"><Icon name="users" /></span>
+        <span class="pathway-copy">
+          <h3>Reservations</h3>
+          <p>Send a request. Staff will confirm the details.</p>
+        </span>
+        <Icon name="arrow-right" class="pathway-arrow" />
       </a>
-      <a class="flow-card reveal" href="/contact">
-        <Icon name="map-pin" />
-        <span>04</span>
-        <h3>Contact</h3>
-        <p>Call, follow, or get directions without digging.</p>
+      <a class="pathway-card reveal" href="/contact">
+        <span class="pathway-icon"><Icon name="map-pin" /></span>
+        <span class="pathway-copy">
+          <h3>Contact</h3>
+          <p>Call, follow, or get directions without digging.</p>
+        </span>
+        <Icon name="arrow-right" class="pathway-arrow" />
       </a>
     </div>
   </section>
 
   <section class="home-section menu-showcase-section">
     <div class="showcase-panel reveal">
-      <p class="eyebrow">Menu</p>
       <h2>The current board, kept fresh.</h2>
       <p>
         Guests see the items that are available now, organized by section with
@@ -104,41 +111,20 @@ import { site } from "../config/site";
   </section>
 
   <section class="home-section events-showcase-section">
-    <div class="events-preview reveal" aria-hidden="true">
-      <div class="calendar-card">
-        <span>Thu</span>
-        <strong>8</strong>
-        <small>Trivia</small>
-      </div>
-      <div class="calendar-card is-featured">
-        <span>Fri</span>
-        <strong>9</strong>
-        <small>Live music</small>
-      </div>
-      <div class="calendar-card">
-        <span>Sat</span>
-        <strong>10</strong>
-        <small>Tap night</small>
-      </div>
-    </div>
     <div class="showcase-panel reveal">
-      <p class="eyebrow">Events</p>
       <h2>A simple look at what is coming up.</h2>
       <p>
-        Upcoming events appear as a quick list, with a calendar below for guests
-        who want to choose the right night.
+        The homepage shows the next public event first. Guests who want to plan
+        ahead can open the full calendar and complete event list.
       </p>
-      <div class="mini-list" aria-label="Events capabilities">
-        <p><Icon name="clock" /><span>Date and time stay easy to scan.</span></p>
-        <p><Icon name="map-pin" /><span>Location appears when available.</span></p>
-        <p><Icon name="calendar" /><span>The schedule stays current.</span></p>
-      </div>
-      <a class="text-link" href="/events">See upcoming events <Icon name="arrow-right" /></a>
+      <a class="button" href="/events"><Icon name="calendar" />View Calendar and More Events</a>
+    </div>
+    <div class="reveal">
+      <HomeNextEvent />
     </div>
   </section>
 
   <section class="reservation-cta reveal">
-    <p class="eyebrow">Request a Reservation</p>
     <h2>Bring the group. Staff will confirm the details.</h2>
     <p>
       Send the date, time, and party size. The request is received by staff, then
@@ -160,7 +146,7 @@ import { site } from "../config/site";
           }
         }
       },
-      { threshold: 0.18 },
+      { threshold: 0.08, rootMargin: "0px 0px 12% 0px" },
     );
 
     for (const item of revealItems) {

@@ -72,19 +72,20 @@
     const toolbar = document.createElement("div");
     toolbar.className = "calendar-toolbar";
 
-    const titleGroup = document.createElement("div");
-    const eyebrow = document.createElement("p");
-    eyebrow.className = "eyebrow";
-    eyebrow.textContent = "Full calendar";
+    const leftTools = document.createElement("div");
+    leftTools.className = "calendar-toolbar-left";
 
-    const title = document.createElement("h2");
-    title.textContent = new Intl.DateTimeFormat(undefined, {
-      month: "long",
-      year: "numeric",
-    }).format(visibleMonth);
+    const todayButton = document.createElement("button");
+    todayButton.type = "button";
+    todayButton.className = "calendar-today-button";
+    todayButton.textContent = "Today";
+    todayButton.addEventListener("click", () => {
+      visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      selectedDateKey = toDateKey(today);
+      renderCalendar();
+    });
 
-    titleGroup.appendChild(eyebrow);
-    titleGroup.appendChild(title);
+    leftTools.appendChild(todayButton);
 
     const controls = document.createElement("div");
     controls.className = "calendar-controls";
@@ -111,8 +112,31 @@
 
     controls.appendChild(previous);
     controls.appendChild(next);
-    toolbar.appendChild(titleGroup);
-    toolbar.appendChild(controls);
+    leftTools.appendChild(controls);
+
+    const title = document.createElement("h2");
+    title.textContent = new Intl.DateTimeFormat(undefined, {
+      month: "long",
+      year: "numeric",
+    }).format(visibleMonth);
+    leftTools.appendChild(title);
+
+    const rightTools = document.createElement("div");
+    rightTools.className = "calendar-toolbar-right";
+
+    const monthPill = document.createElement("span");
+    monthPill.className = "calendar-view-pill is-active";
+    monthPill.textContent = "Month";
+
+    const countPill = document.createElement("span");
+    countPill.className = "calendar-view-pill";
+    countPill.textContent = `${calendarEvents.length} upcoming`;
+
+    rightTools.appendChild(monthPill);
+    rightTools.appendChild(countPill);
+
+    toolbar.appendChild(leftTools);
+    toolbar.appendChild(rightTools);
 
     const layout = document.createElement("div");
     layout.className = "calendar-layout";
@@ -165,7 +189,7 @@
 
       for (const event of day.events.slice(0, 2)) {
         const eventLabel = document.createElement("span");
-        eventLabel.textContent = event.title;
+        eventLabel.textContent = event.allDay ? event.title : `${formatEventTime(event)} ${event.title}`;
         events.appendChild(eventLabel);
       }
 
