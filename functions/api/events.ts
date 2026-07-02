@@ -29,12 +29,14 @@ type EventInstance = {
 
 const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 const MAX_EVENTS = 12;
+const ABSOLUTE_MAX_EVENTS = 80;
 const LOOKAHEAD_DAYS = 180;
 
-export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
+export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
   const calendarUrl =
     clean(env.GOOGLE_CALENDAR_ICAL_URL, 500) ||
     toPublicIcalUrl(clean(env.PUBLIC_GOOGLE_CALENDAR_EMBED_URL, 500));
+  const eventLimit = getEventLimit(request);
 
   if (!calendarUrl) {
     return json({ error: "Events calendar is not configured" }, 500);
@@ -96,7 +98,7 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
   return json(
     {
       updatedAt: new Date().toISOString(),
-      events: events.slice(0, MAX_EVENTS),
+      events: events.slice(0, eventLimit),
       meta: {
         validEvents: events.length,
         skippedEvents,
@@ -108,6 +110,17 @@ export const onRequestGet: PagesFunction<Env> = async ({ env }) => {
     }
   );
 };
+
+function getEventLimit(request: Request): number {
+  const url = new URL(request.url);
+  const parsed = Number(url.searchParams.get("limit"));
+
+  if (!Number.isFinite(parsed)) {
+    return MAX_EVENTS;
+  }
+
+  return Math.min(Math.max(Math.floor(parsed), 1), ABSOLUTE_MAX_EVENTS);
+}
 
 function normalizeEvent(lines: string[]): EventInstance | null {
   const properties = lines.map(parseProperty).filter((property): property is IcsProperty => Boolean(property));

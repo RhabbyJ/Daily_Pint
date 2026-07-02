@@ -50,7 +50,7 @@ The reservation call to action must say **Request a Reservation** because reques
 - The menu page requests `/api/menu`.
 - `/api/menu` reads the Google Sheets published CSV URL from `MENU_CSV_URL`.
 - The Pages Function validates the CSV headers, normalizes safe text values, filters unavailable or invalid rows, sorts categories and items, and returns grouped JSON.
-- The events page requests `/api/events` for an upcoming-events list and also embeds the public Google Calendar.
+- The events page requests `/api/events` for an upcoming-events list and custom calendar UI.
 - `/api/events` derives the public iCal feed from the configured Google Calendar embed URL, normalizes event text, filters past events, and returns JSON.
 - The reservations page embeds a Tally form.
 - Tally stores reservation submissions and emails owner or staff.
@@ -108,8 +108,8 @@ Operational rules:
 
 - Only public event information belongs on the calendar.
 - Owner or trusted staff manage event title, date, time, location, and description in Google Calendar.
-- The website uses the public Google Calendar embed URL.
-- The website derives a public iCal feed from the embed URL for the upcoming-events list.
+- The website uses the public Google Calendar embed URL as configuration.
+- The website derives a public iCal feed from the embed URL for the upcoming-events list and custom calendar UI.
 - Calendar edits should appear on the website without code changes.
 - Keep private planning notes, staff schedules, customer data, and internal event costs out of the public calendar.
 
@@ -133,9 +133,8 @@ Required behavior:
 
 Customer-facing error handling:
 
-- If the event list cannot load, show a simple temporary-unavailable message above the calendar.
-- If no upcoming events are listed, show a simple empty state above the calendar.
-- Keep the embedded Google Calendar visible when configured.
+- If events cannot load, show a simple temporary-unavailable message.
+- If no upcoming events are listed, show a simple empty state.
 
 ## Menu API Requirements
 
@@ -225,7 +224,7 @@ GoDaddy DNS:
 - Unavailable and invalid rows are hidden.
 - Categories and items sort correctly.
 - Tags render correctly.
-- Events page embeds the public Google Calendar.
+- Events page renders a custom calendar UI from the public Google Calendar data.
 - Upcoming-events list shows date, title, description, and location when available.
 - Google Calendar edits appear on the website.
 - Reservation page embeds the Tally form.

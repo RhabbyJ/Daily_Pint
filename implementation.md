@@ -9,7 +9,7 @@ This repo contains the local v1 website implementation. The remaining work needs
 - Menu loading from a published Google Sheets CSV.
 - Menu validation, normalization, sorting, availability filtering, and string length limits.
 - Client-side menu rendering with text-only sheet values.
-- Events page using a public Google Calendar embed.
+- Events page using custom UI sourced from a public Google Calendar.
 - Cloudflare Pages Function at `/api/events` for the upcoming-events list.
 - Public Google Calendar iCal parsing for date, title, description, and location.
 - Reservation request page using a Tally embed.
@@ -42,7 +42,7 @@ This repo contains the local v1 website implementation. The remaining work needs
 - Add only public event titles, dates, times, locations, and descriptions.
 - Copy the public calendar embed URL.
 - Set the embed URL as `PUBLIC_GOOGLE_CALENDAR_EMBED_URL` in Cloudflare Pages.
-- The website uses that same calendar source for the embedded calendar and upcoming-events list.
+- The website derives an iCal feed from that calendar source for the custom calendar UI and upcoming-events list.
 - Keep staff schedules, private planning notes, customer data, and internal costs out of the public calendar.
 
 ### Cloudflare Pages

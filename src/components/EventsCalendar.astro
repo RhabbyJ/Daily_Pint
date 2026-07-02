@@ -1,0 +1,369 @@
+<section id="custom-calendar-root" class="custom-calendar-root" aria-live="polite">
+  <div class="status-message">
+    <h2>Loading calendar...</h2>
+    <p>Upcoming events are loading from the public calendar.</p>
+  </div>
+</section>
+
+<script>
+  type CalendarEvent = {
+    id: string;
+    title: string;
+    description: string;
+    location: string;
+    start: string;
+    end: string;
+    allDay: boolean;
+    timeZone: string;
+  };
+
+  type EventsResponse = {
+    updatedAt: string;
+    events: CalendarEvent[];
+    meta: {
+      validEvents: number;
+      skippedEvents: number;
+    };
+  };
+
+  type CalendarDay = {
+    date: Date;
+    key: string;
+    inMonth: boolean;
+    isToday: boolean;
+    events: CalendarEvent[];
+  };
+
+  const calendarRoot = document.getElementById("custom-calendar-root");
+  const today = new Date();
+  let calendarEvents: CalendarEvent[] = [];
+  let visibleMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+  let selectedDateKey = toDateKey(today);
+
+  async function loadCalendar() {
+    if (!calendarRoot) return;
+
+    try {
+      const response = await fetch("/api/events?limit=80", {
+        headers: { Accept: "application/json" },
+      });
+
+      if (!response.ok) {
+        throw new Error("Calendar unavailable");
+      }
+
+      const data = (await response.json()) as EventsResponse;
+      calendarEvents = data.events;
+      selectedDateKey = findInitialSelectedDate(calendarEvents);
+      visibleMonth = monthFromDateKey(selectedDateKey);
+      renderCalendar();
+    } catch {
+      renderCalendarMessage("Calendar is temporarily unavailable.", "Please check back soon.");
+    }
+  }
+
+  function renderCalendar() {
+    if (!calendarRoot) return;
+    calendarRoot.textContent = "";
+
+    const shell = document.createElement("div");
+    shell.className = "custom-calendar-shell";
+
+    const toolbar = document.createElement("div");
+    toolbar.className = "calendar-toolbar";
+
+    const titleGroup = document.createElement("div");
+    const eyebrow = document.createElement("p");
+    eyebrow.className = "eyebrow";
+    eyebrow.textContent = "Full calendar";
+
+    const title = document.createElement("h2");
+    title.textContent = new Intl.DateTimeFormat(undefined, {
+      month: "long",
+      year: "numeric",
+    }).format(visibleMonth);
+
+    titleGroup.appendChild(eyebrow);
+    titleGroup.appendChild(title);
+
+    const controls = document.createElement("div");
+    controls.className = "calendar-controls";
+
+    const previous = document.createElement("button");
+    previous.type = "button";
+    previous.textContent = "<";
+    previous.setAttribute("aria-label", "Previous month");
+    previous.addEventListener("click", () => {
+      visibleMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() - 1, 1);
+      selectFirstVisibleEvent();
+      renderCalendar();
+    });
+
+    const next = document.createElement("button");
+    next.type = "button";
+    next.textContent = ">";
+    next.setAttribute("aria-label", "Next month");
+    next.addEventListener("click", () => {
+      visibleMonth = new Date(visibleMonth.getFullYear(), visibleMonth.getMonth() + 1, 1);
+      selectFirstVisibleEvent();
+      renderCalendar();
+    });
+
+    controls.appendChild(previous);
+    controls.appendChild(next);
+    toolbar.appendChild(titleGroup);
+    toolbar.appendChild(controls);
+
+    const layout = document.createElement("div");
+    layout.className = "calendar-layout";
+
+    const grid = renderMonthGrid();
+    const detail = renderSelectedEvents();
+
+    layout.appendChild(grid);
+    layout.appendChild(detail);
+    shell.appendChild(toolbar);
+    shell.appendChild(layout);
+    calendarRoot.appendChild(shell);
+  }
+
+  function renderMonthGrid(): HTMLElement {
+    const gridWrap = document.createElement("div");
+    gridWrap.className = "calendar-grid-wrap";
+
+    const weekdays = document.createElement("div");
+    weekdays.className = "calendar-weekdays";
+
+    for (const weekday of ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]) {
+      const label = document.createElement("span");
+      label.textContent = weekday;
+      weekdays.appendChild(label);
+    }
+
+    const grid = document.createElement("div");
+    grid.className = "calendar-grid";
+
+    for (const day of getCalendarDays()) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "calendar-day";
+      button.dataset.date = day.key;
+      button.setAttribute("aria-label", formatAccessibleDate(day.date, day.events.length));
+
+      if (!day.inMonth) button.classList.add("is-muted");
+      if (day.isToday) button.classList.add("is-today");
+      if (day.key === selectedDateKey) button.classList.add("is-selected");
+      if (day.events.length) button.classList.add("has-events");
+
+      const number = document.createElement("span");
+      number.className = "calendar-day-number";
+      number.textContent = String(day.date.getDate());
+      button.appendChild(number);
+
+      const events = document.createElement("span");
+      events.className = "calendar-day-events";
+
+      for (const event of day.events.slice(0, 2)) {
+        const eventLabel = document.createElement("span");
+        eventLabel.textContent = event.title;
+        events.appendChild(eventLabel);
+      }
+
+      if (day.events.length > 2) {
+        const more = document.createElement("span");
+        more.textContent = `+${day.events.length - 2} more`;
+        events.appendChild(more);
+      }
+
+      button.appendChild(events);
+      button.addEventListener("click", () => {
+        selectedDateKey = day.key;
+        renderCalendar();
+      });
+
+      grid.appendChild(button);
+    }
+
+    gridWrap.appendChild(weekdays);
+    gridWrap.appendChild(grid);
+    return gridWrap;
+  }
+
+  function renderSelectedEvents(): HTMLElement {
+    const aside = document.createElement("aside");
+    aside.className = "calendar-detail";
+
+    const selectedDate = parseDateKey(selectedDateKey);
+    const heading = document.createElement("h3");
+    heading.textContent = new Intl.DateTimeFormat(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+    }).format(selectedDate);
+    aside.appendChild(heading);
+
+    const events = eventsForDate(selectedDateKey);
+
+    if (!events.length) {
+      const empty = document.createElement("p");
+      empty.textContent = "No public events listed for this date.";
+      aside.appendChild(empty);
+      return aside;
+    }
+
+    const list = document.createElement("div");
+    list.className = "calendar-detail-list";
+
+    for (const event of events) {
+      const article = document.createElement("article");
+
+      const time = document.createElement("p");
+      time.className = "calendar-detail-time";
+      time.textContent = formatEventTime(event);
+      article.appendChild(time);
+
+      const title = document.createElement("h4");
+      title.textContent = event.title;
+      article.appendChild(title);
+
+      if (event.description) {
+        const description = document.createElement("p");
+        description.textContent = event.description;
+        article.appendChild(description);
+      }
+
+      if (event.location) {
+        const location = document.createElement("p");
+        location.className = "event-location";
+        location.textContent = event.location;
+        article.appendChild(location);
+      }
+
+      list.appendChild(article);
+    }
+
+    aside.appendChild(list);
+    return aside;
+  }
+
+  function getCalendarDays(): CalendarDay[] {
+    const year = visibleMonth.getFullYear();
+    const month = visibleMonth.getMonth();
+    const first = new Date(year, month, 1);
+    const start = new Date(year, month, 1 - first.getDay());
+    const days: CalendarDay[] = [];
+
+    for (let index = 0; index < 42; index += 1) {
+      const date = new Date(start.getFullYear(), start.getMonth(), start.getDate() + index);
+      const key = toDateKey(date);
+      days.push({
+        date,
+        key,
+        inMonth: date.getMonth() === month,
+        isToday: key === toDateKey(today),
+        events: eventsForDate(key),
+      });
+    }
+
+    return days;
+  }
+
+  function eventsForDate(dateKey: string): CalendarEvent[] {
+    return calendarEvents.filter((event) => eventDateKey(event) === dateKey);
+  }
+
+  function eventDateKey(event: CalendarEvent): string {
+    if (event.allDay) {
+      return event.start;
+    }
+
+    const date = new Date(event.start);
+    const timeZone = event.timeZone || "America/Los_Angeles";
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+    }).formatToParts(date);
+    const values = new Map(parts.map((part) => [part.type, part.value]));
+    return `${values.get("year")}-${values.get("month")}-${values.get("day")}`;
+  }
+
+  function formatEventTime(event: CalendarEvent): string {
+    if (event.allDay) return "All day";
+
+    return new Intl.DateTimeFormat(undefined, {
+      hour: "numeric",
+      minute: "2-digit",
+      timeZone: event.timeZone || "America/Los_Angeles",
+    }).format(new Date(event.start));
+  }
+
+  function formatAccessibleDate(date: Date, eventCount: number): string {
+    const label = new Intl.DateTimeFormat(undefined, {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }).format(date);
+
+    if (!eventCount) {
+      return `${label}, no events`;
+    }
+
+    return `${label}, ${eventCount} ${eventCount === 1 ? "event" : "events"}`;
+  }
+
+  function findInitialSelectedDate(events: CalendarEvent[]): string {
+    const firstUpcoming = events.find((event) => eventDateKey(event) >= toDateKey(today));
+    return firstUpcoming ? eventDateKey(firstUpcoming) : toDateKey(today);
+  }
+
+  function selectFirstVisibleEvent() {
+    const year = visibleMonth.getFullYear();
+    const month = visibleMonth.getMonth();
+    const firstEvent = calendarEvents.find((event) => {
+      const date = parseDateKey(eventDateKey(event));
+      return date.getFullYear() === year && date.getMonth() === month;
+    });
+
+    selectedDateKey = firstEvent ? eventDateKey(firstEvent) : toDateKey(new Date(year, month, 1));
+  }
+
+  function monthFromDateKey(dateKey: string): Date {
+    const date = parseDateKey(dateKey);
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  }
+
+  function parseDateKey(dateKey: string): Date {
+    const [year = "0", month = "1", day = "1"] = dateKey.split("-");
+    return new Date(Number(year), Number(month) - 1, Number(day));
+  }
+
+  function toDateKey(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    return `${year}-${month}-${day}`;
+  }
+
+  function renderCalendarMessage(headingText: string, bodyText: string) {
+    if (!calendarRoot) return;
+    calendarRoot.textContent = "";
+
+    const message = document.createElement("div");
+    message.className = "empty-state";
+
+    const heading = document.createElement("h2");
+    heading.textContent = headingText;
+
+    const body = document.createElement("p");
+    body.textContent = bodyText;
+
+    message.appendChild(heading);
+    message.appendChild(body);
+    calendarRoot.appendChild(message);
+  }
+
+  loadCalendar();
+</script>

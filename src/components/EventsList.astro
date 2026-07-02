@@ -46,7 +46,7 @@
       const data = (await response.json()) as EventsResponse;
       renderEvents(data.events);
     } catch {
-      renderEventsMessage("Events are temporarily unavailable.", "Please check the calendar below.");
+      renderEventsMessage("Events are temporarily unavailable.", "Please check back soon.");
     }
   }
 
@@ -55,7 +55,7 @@
     eventsRoot.textContent = "";
 
     if (!events.length) {
-      renderEventsMessage("No upcoming events are listed right now.", "Please check the calendar below.");
+      renderEventsMessage("No upcoming events are listed right now.", "Please check back soon.");
       return;
     }
 

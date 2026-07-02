@@ -1,6 +1,7 @@
 ---
 import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
+import EventsCalendar from "../components/EventsCalendar.astro";
 import EventsList from "../components/EventsList.astro";
 import { site } from "../config/site";
 ---
@@ -10,7 +11,7 @@ import { site } from "../config/site";
     <div>
       <p class="eyebrow">Updated from Google Calendar</p>
       <h1>Events</h1>
-      <p>Upcoming events appear as a quick list first, with the full public calendar below for deeper planning.</p>
+      <p>Upcoming events appear as a quick list first, with a custom calendar view below for deeper planning.</p>
     </div>
     <div class="page-action-panel" aria-label="Events notes">
       <p><Icon name="calendar" />Staff manage the public calendar.</p>
@@ -24,25 +25,9 @@ import { site } from "../config/site";
   <section class="events-calendar" aria-label={`${site.name} events calendar`}>
     <div class="section-header">
       <p class="eyebrow">Full calendar</p>
-      <h2>Browse the complete public schedule.</h2>
+      <h2>Browse the public schedule without leaving the site.</h2>
     </div>
-    {
-      site.googleCalendarEmbedUrl ? (
-        <iframe
-          src={site.googleCalendarEmbedUrl}
-          width="100%"
-          height="720"
-          style="border:0"
-          loading="lazy"
-          title={`${site.name} events calendar`}
-        />
-      ) : (
-        <div class="empty-state">
-          <h2>Events calendar is not configured yet.</h2>
-          <p>Please check back soon.</p>
-        </div>
-      )
-    }
+    <EventsCalendar />
   </section>
 
   <section class="page-followup">

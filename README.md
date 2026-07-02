@@ -1,6 +1,6 @@
 # The Daily Pint
 
-Astro static site for a bar MVP deployed on Cloudflare Pages. The public menu is read from a published Google Sheets CSV through a Cloudflare Pages Function, events are listed and embedded from Google Calendar, and reservation requests are embedded with Tally.
+Astro static site for a bar MVP deployed on Cloudflare Pages. The public menu is read from a published Google Sheets CSV through a Cloudflare Pages Function, events are rendered from Google Calendar data, and reservation requests are embedded with Tally.
 
 ## Local Setup
 
@@ -74,4 +74,4 @@ Reservation submissions are stored in Tally, not in this website backend.
 
 ## Events
 
-Create a public Google Calendar for customer-facing events, copy its embed URL, and set it as `PUBLIC_GOOGLE_CALENDAR_EMBED_URL`. The `/events` page shows an upcoming-events list from `/api/events` and embeds the calendar so owner edits appear without code changes.
+Create a public Google Calendar for customer-facing events, copy its embed URL, and set it as `PUBLIC_GOOGLE_CALENDAR_EMBED_URL`. The `/events` page shows an upcoming-events list and custom calendar UI from `/api/events` so owner edits appear without code changes.
