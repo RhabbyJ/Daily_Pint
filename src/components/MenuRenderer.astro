@@ -62,9 +62,19 @@
       const section = document.createElement("section");
       section.className = "menu-category";
 
+      const categoryHeader = document.createElement("div");
+      categoryHeader.className = "menu-category-heading";
+
       const heading = document.createElement("h2");
       heading.textContent = category.name;
-      section.appendChild(heading);
+
+      const count = document.createElement("p");
+      count.className = "menu-category-meta";
+      count.textContent = `${category.items.length} item${category.items.length === 1 ? "" : "s"}`;
+
+      categoryHeader.appendChild(heading);
+      categoryHeader.appendChild(count);
+      section.appendChild(categoryHeader);
 
       const list = document.createElement("div");
       list.className = "menu-list";

@@ -1,4 +1,5 @@
 ---
+import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
 import { site } from "../config/site";
 
@@ -8,10 +9,35 @@ const tallySrc = site.tallyFormId
 ---
 
 <Layout title={`Reservations | ${site.name}`} description={`Request a reservation at ${site.name}.`}>
-  <section class="page-heading">
-    <p class="eyebrow">Staff-confirmed</p>
-    <h1>Request a Reservation</h1>
-    <p>Reservations are not confirmed until our staff contacts you.</p>
+  <section class="page-heading page-heading-grid">
+    <div>
+      <p class="eyebrow">Staff-confirmed</p>
+      <h1>Request a Reservation</h1>
+      <p>Send the details. Staff will review the request and contact you before it is confirmed.</p>
+    </div>
+    <div class="page-action-panel" aria-label="Reservation notes">
+      <p><Icon name="users" />Include party size.</p>
+      <p><Icon name="calendar" />Choose your requested date and time.</p>
+      <p><Icon name="check" />Staff confirmation is required.</p>
+    </div>
+  </section>
+
+  <section class="process-strip" aria-label="Reservation process">
+    <article>
+      <Icon name="list" />
+      <h2>1. Send the request</h2>
+      <p>Name, phone, email, requested date, time, and party size.</p>
+    </article>
+    <article>
+      <Icon name="clock" />
+      <h2>2. Staff reviews</h2>
+      <p>The request is not instant booking or table inventory.</p>
+    </article>
+    <article>
+      <Icon name="check" />
+      <h2>3. You get confirmation</h2>
+      <p>The reservation is confirmed only after staff contacts you.</p>
+    </article>
   </section>
 
   <section class="reservation-form">

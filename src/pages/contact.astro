@@ -1,25 +1,48 @@
 ---
+import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
 import { site } from "../config/site";
 ---
 
 <Layout title={`Contact | ${site.name}`} description={`Contact and location for ${site.name}.`}>
-  <section class="page-heading contact-heading">
-    <p class="eyebrow">Find us</p>
-    <h1>Contact</h1>
-    <div class="contact-list">
-      {site.address && <p>{site.address}</p>}
-      {site.phone && <p><a href={`tel:${site.phone}`}>{site.phone}</a></p>}
-      {site.instagramUrl && <p><a href={site.instagramUrl}>Instagram</a></p>}
+  <section class="page-heading page-heading-grid contact-heading">
+    <div>
+      <p class="eyebrow">Find us</p>
+      <h1>Contact</h1>
+      <p>Call, follow, or get directions. Contact details are controlled by public environment configuration.</p>
     </div>
-    {!site.address && !site.phone && !site.instagramUrl && (
-      <p>Contact details are not configured yet.</p>
-    )}
+    <div class="page-action-panel" aria-label="Contact quick actions">
+      {site.phone && <a href={`tel:${site.phone}`}><Icon name="phone" />Call {site.phone}</a>}
+      {site.instagramUrl && <a href={site.instagramUrl}><Icon name="instagram" />Instagram</a>}
+      <a href="/events"><Icon name="calendar" />Upcoming events</a>
+    </div>
+  </section>
+
+  <section class="contact-grid" aria-label="Contact details">
+    <article>
+      <Icon name="map-pin" />
+      <h2>Location</h2>
+      {site.address ? <p>{site.address}</p> : <p>Address is not configured yet.</p>}
+    </article>
+    <article>
+      <Icon name="phone" />
+      <h2>Phone</h2>
+      {site.phone ? <p><a href={`tel:${site.phone}`}>{site.phone}</a></p> : <p>Phone number is not configured yet.</p>}
+    </article>
+    <article>
+      <Icon name="instagram" />
+      <h2>Instagram</h2>
+      {site.instagramUrl ? <p><a href={site.instagramUrl}>Follow {site.name}</a></p> : <p>Instagram is not configured yet.</p>}
+    </article>
   </section>
 
   {
     site.googleMapsEmbedUrl && (
       <section class="map-section">
+        <div class="section-header">
+          <p class="eyebrow">Map</p>
+          <h2>Directions at a glance.</h2>
+        </div>
         <iframe
           src={site.googleMapsEmbedUrl}
           width="100%"

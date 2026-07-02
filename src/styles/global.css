@@ -13,6 +13,9 @@
   --color-copper: #b8673f;
   --color-wine: #5a1f2d;
   --color-moss: #2f4436;
+  --color-mint: #9ee6d5;
+  --color-blue: #9bbcff;
+  --color-glass: rgb(245 234 213 / 7%);
   --shadow: 0 24px 70px rgb(3 13 12 / 28%);
   --shadow-soft: 0 16px 44px rgb(7 26 24 / 16%);
   --radius: 8px;
@@ -54,6 +57,12 @@ img,
 svg,
 iframe {
   max-width: 100%;
+}
+
+.icon {
+  width: 1.05em;
+  height: 1.05em;
+  flex: 0 0 auto;
 }
 
 main,
@@ -125,6 +134,7 @@ nav a {
   position: relative;
   display: inline-flex;
   align-items: center;
+  gap: 0.45rem;
   min-height: 40px;
   padding: 0.55rem 0.75rem;
   color: rgb(245 234 213 / 72%);
@@ -146,6 +156,11 @@ nav a.is-active {
 
 nav a:hover {
   transform: translateY(-1px);
+}
+
+nav a .icon {
+  color: var(--color-gold);
+  font-size: 0.95rem;
 }
 
 :focus-visible {
@@ -240,6 +255,7 @@ nav a:hover {
 .hero h1 {
   max-width: 8ch;
   font-size: 6.8rem;
+  line-height: 1.06;
 }
 
 .hero-lede {
@@ -265,11 +281,16 @@ nav a:hover {
   margin-top: 2rem;
 }
 
+.hero-actions {
+  max-width: 44rem;
+}
+
 .button {
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
   min-width: 10rem;
   min-height: 48px;
   padding: 0.82rem 1.1rem;
@@ -314,6 +335,71 @@ nav a:hover {
 
 .button.secondary::after {
   background: linear-gradient(100deg, transparent, rgb(216 173 93 / 16%), transparent);
+}
+
+.hero-planner {
+  position: absolute;
+  top: 7.6rem;
+  right: var(--site-edge);
+  z-index: 2;
+  width: min(23rem, calc(100vw - 2rem));
+  padding: 1rem;
+  color: var(--color-cream);
+  background:
+    linear-gradient(180deg, rgb(245 234 213 / 11%), rgb(245 234 213 / 6%)),
+    rgb(7 26 24 / 72%);
+  border: 1px solid rgb(245 234 213 / 16%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.hero-planner .eyebrow {
+  margin-bottom: 0.8rem;
+}
+
+.hero-planner a {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  align-items: center;
+  padding: 0.82rem 0;
+  color: inherit;
+  text-decoration: none;
+  border-top: 1px solid rgb(245 234 213 / 12%);
+  transition: transform 180ms ease, color 180ms ease;
+}
+
+.hero-planner a:hover,
+.hero-planner a:focus-visible {
+  color: #ffe0a0;
+  transform: translateX(3px);
+}
+
+.hero-planner strong,
+.hero-planner small {
+  display: block;
+}
+
+.hero-planner strong {
+  font-size: 0.92rem;
+}
+
+.hero-planner small {
+  margin-top: 0.15rem;
+  color: rgb(245 234 213 / 64%);
+  font-size: 0.78rem;
+  line-height: 1.35;
+}
+
+.action-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  color: var(--color-night);
+  background: linear-gradient(145deg, #ffe5a8, var(--color-gold));
+  border-radius: 50%;
 }
 
 .hero-rail {
@@ -498,6 +584,206 @@ nav a:hover {
   font-size: 0.94rem;
 }
 
+.visit-flow-section {
+  display: grid;
+  grid-template-columns: 0.22fr 0.78fr;
+  gap: 2rem;
+}
+
+.flow-grid {
+  grid-column: 2;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  margin-top: 2.25rem;
+  overflow: hidden;
+  border: 1px solid rgb(245 234 213 / 12%);
+  border-radius: var(--radius);
+  background: rgb(245 234 213 / 12%);
+}
+
+.flow-card {
+  min-height: 19rem;
+  display: flex;
+  flex-direction: column;
+  padding: 1.15rem;
+  color: var(--color-cream);
+  text-decoration: none;
+  background:
+    linear-gradient(180deg, rgb(245 234 213 / 9%), rgb(245 234 213 / 4%)),
+    var(--color-night-2);
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.flow-card:hover,
+.flow-card:focus-visible {
+  transform: translateY(-3px);
+  background:
+    linear-gradient(180deg, rgb(158 230 213 / 13%), rgb(245 234 213 / 5%)),
+    var(--color-night-2);
+}
+
+.flow-card > .icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-gold);
+}
+
+.flow-card span {
+  margin-top: auto;
+  color: var(--color-mint);
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.flow-card h3 {
+  margin: 0.65rem 0 0;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.flow-card p {
+  margin: 0.55rem 0 0;
+  color: rgb(245 234 213 / 68%);
+  font-size: 0.92rem;
+}
+
+.menu-showcase-section,
+.events-showcase-section {
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  align-items: center;
+  padding-top: 2rem;
+}
+
+.events-showcase-section {
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
+}
+
+.showcase-panel h2 {
+  margin: 0;
+  font-size: 4.1rem;
+}
+
+.showcase-panel > p:not(.eyebrow) {
+  max-width: 42rem;
+  margin: 1rem 0 0;
+  color: rgb(245 234 213 / 70%);
+}
+
+.mini-list {
+  display: grid;
+  gap: 0.65rem;
+  margin: 1.6rem 0;
+}
+
+.mini-list p {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin: 0;
+  color: rgb(245 234 213 / 76%);
+}
+
+.mini-list .icon {
+  width: 1.15rem;
+  height: 1.15rem;
+  margin-top: 0.2rem;
+  color: var(--color-mint);
+}
+
+.bar-snapshot {
+  min-height: 560px;
+  display: grid;
+  align-content: end;
+  gap: 1px;
+  padding: 1rem;
+  border: 1px solid rgb(245 234 213 / 14%);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(0deg, rgb(7 26 24 / 32%), rgb(7 26 24 / 4%)),
+    url("/images/daily-pint-hero.png") 62% center / cover;
+  box-shadow: var(--shadow);
+}
+
+.bar-snapshot div {
+  padding: 1rem;
+  color: var(--color-night);
+  background: rgb(255 248 235 / 92%);
+  border: 1px solid rgb(255 255 255 / 45%);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}
+
+.bar-snapshot span,
+.bar-snapshot strong,
+.bar-snapshot small {
+  display: block;
+}
+
+.bar-snapshot span {
+  color: var(--color-wine);
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+}
+
+.bar-snapshot strong {
+  margin-top: 0.25rem;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.bar-snapshot small {
+  margin-top: 0.25rem;
+  color: var(--color-muted);
+  font-weight: 800;
+}
+
+.events-preview {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.calendar-card {
+  min-height: 18rem;
+  display: grid;
+  align-content: space-between;
+  padding: 1rem;
+  color: var(--color-cream);
+  border: 1px solid rgb(245 234 213 / 14%);
+  border-radius: var(--radius);
+  background:
+    linear-gradient(180deg, rgb(245 234 213 / 9%), rgb(245 234 213 / 4%)),
+    var(--color-night-2);
+  box-shadow: var(--shadow-soft);
+}
+
+.calendar-card.is-featured {
+  color: var(--color-night);
+  background: linear-gradient(145deg, #ffe4a3, var(--color-gold) 58%, var(--color-copper));
+}
+
+.calendar-card span,
+.calendar-card small {
+  font-size: 0.82rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.calendar-card strong {
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 6rem;
+  line-height: 0.9;
+}
+
 .pours-section {
   display: grid;
   grid-template-columns: minmax(0, 0.9fr) minmax(0, 1fr);
@@ -560,6 +846,7 @@ nav a:hover {
 .text-link {
   display: inline-flex;
   align-items: center;
+  gap: 0.4rem;
   min-height: 44px;
   color: var(--color-gold);
   font-size: 0.92rem;
@@ -574,6 +861,24 @@ nav a:hover {
   color: #ffe0a0;
   border-color: #ffe0a0;
   transform: translateX(3px);
+}
+
+.section-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.section-header h2 {
+  max-width: 46rem;
+  margin: 0;
+  color: var(--color-cream);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 2.65rem;
+  line-height: 1;
+  letter-spacing: 0;
 }
 
 .reservation-cta {
@@ -627,6 +932,14 @@ nav a:hover {
   padding: 6rem 0 2.5rem;
 }
 
+.page-heading-grid {
+  max-width: none;
+  display: grid;
+  grid-template-columns: minmax(0, 0.76fr) minmax(19rem, 0.36fr);
+  gap: 2rem;
+  align-items: end;
+}
+
 .page-heading h1 {
   color: var(--color-cream);
   font-size: 5.1rem;
@@ -635,6 +948,87 @@ nav a:hover {
 .page-heading p {
   color: rgb(245 234 213 / 68%);
   font-size: 1.06rem;
+}
+
+.page-action-panel {
+  display: grid;
+  gap: 0.65rem;
+  padding: 1rem;
+  color: var(--color-cream);
+  background:
+    linear-gradient(180deg, rgb(245 234 213 / 9%), rgb(245 234 213 / 5%)),
+    var(--color-night-2);
+  border: 1px solid rgb(245 234 213 / 14%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.page-action-panel p,
+.page-action-panel a {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  min-height: 2.35rem;
+  margin: 0;
+  color: rgb(245 234 213 / 78%);
+  font-size: 0.9rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.page-action-panel a {
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgb(245 234 213 / 11%);
+  transition: color 180ms ease, transform 180ms ease;
+}
+
+.page-action-panel a:last-child {
+  border-bottom: 0;
+}
+
+.page-action-panel a:hover,
+.page-action-panel a:focus-visible {
+  color: #ffe0a0;
+  transform: translateX(3px);
+}
+
+.page-action-panel .icon {
+  color: var(--color-gold);
+}
+
+.page-followup {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 2rem;
+  margin: 2rem 0 0;
+  padding: 1.25rem;
+  color: var(--color-cream);
+  background:
+    linear-gradient(135deg, rgb(158 230 213 / 10%), rgb(216 173 93 / 9%)),
+    var(--color-night-2);
+  border: 1px solid rgb(245 234 213 / 14%);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
+}
+
+.page-followup h2 {
+  margin: 0;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 2.35rem;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.page-followup p:not(.eyebrow) {
+  max-width: 44rem;
+  margin: 0.6rem 0 0;
+  color: rgb(245 234 213 / 68%);
+}
+
+.page-followup .actions {
+  flex: 0 0 auto;
+  margin-top: 0;
 }
 
 .menu-root {
@@ -676,13 +1070,28 @@ nav a:hover {
   border-top: 1px solid rgb(245 234 213 / 18%);
 }
 
-.menu-category h2 {
+.menu-category-heading {
+  position: sticky;
+  top: 6.5rem;
+  align-self: start;
+}
+
+.menu-category-heading h2 {
   margin: 0;
   color: var(--color-cream);
   font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
   font-size: 2.3rem;
   line-height: 1.04;
   letter-spacing: 0;
+}
+
+.menu-category-meta {
+  margin: 0.55rem 0 0;
+  color: var(--color-gold);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
 .menu-list {
@@ -721,12 +1130,19 @@ nav a:hover {
 }
 
 .menu-item h3 {
-  font-size: 1.05rem;
+  font-size: 1.08rem;
 }
 
 .menu-price {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2rem;
+  padding: 0.18rem 0.55rem;
   color: var(--color-wine);
   font-weight: 900;
+  background: rgb(90 31 45 / 9%);
+  border: 1px solid rgb(90 31 45 / 14%);
+  border-radius: 999px;
   white-space: nowrap;
 }
 
@@ -754,6 +1170,12 @@ nav a:hover {
   border-radius: 999px;
 }
 
+.button .icon {
+  position: relative;
+  z-index: 1;
+  font-size: 1rem;
+}
+
 .events-list-root {
   padding: 0 0 2.5rem;
 }
@@ -769,21 +1191,19 @@ nav a:hover {
 
 .events-list {
   display: grid;
-  gap: 1px;
-  overflow: hidden;
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius);
-  background: var(--color-line);
-  box-shadow: var(--shadow-soft);
+  gap: 0.9rem;
 }
 
 .event-list-item {
   display: grid;
-  grid-template-columns: minmax(8rem, 0.24fr) minmax(0, 1fr);
+  grid-template-columns: 7.4rem minmax(0, 1fr);
   gap: 1rem;
   padding: 1.15rem;
   color: var(--color-ink);
   background: var(--color-paper);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-soft);
   transition: background 180ms ease, transform 180ms ease;
 }
 
@@ -793,9 +1213,29 @@ nav a:hover {
 }
 
 .event-date {
-  color: var(--color-wine);
-  font-size: 0.9rem;
+  display: grid;
+  align-content: center;
+  min-height: 7rem;
+  padding: 0.8rem;
+  color: var(--color-night);
+  text-align: center;
+  background: linear-gradient(145deg, #ffe4a3, var(--color-gold) 58%, var(--color-copper));
+  border-radius: var(--radius);
+}
+
+.event-date span,
+.event-date small {
+  font-size: 0.72rem;
   font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.event-date strong {
+  margin: 0.2rem 0;
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  line-height: 1;
 }
 
 .event-content h3,
@@ -805,7 +1245,7 @@ nav a:hover {
 }
 
 .event-content h3 {
-  font-size: 1.08rem;
+  font-size: 1.25rem;
 }
 
 .event-description {
@@ -825,6 +1265,65 @@ nav a:hover {
 .events-calendar,
 .map-section {
   padding: 0 0 3rem;
+}
+
+.process-strip,
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin-bottom: 2.5rem;
+  overflow: hidden;
+  border: 1px solid rgb(245 234 213 / 14%);
+  border-radius: var(--radius);
+  background: rgb(245 234 213 / 14%);
+  box-shadow: var(--shadow-soft);
+}
+
+.process-strip article,
+.contact-grid article {
+  min-height: 14rem;
+  padding: 1.2rem;
+  color: var(--color-cream);
+  background:
+    linear-gradient(180deg, rgb(245 234 213 / 9%), rgb(245 234 213 / 4%)),
+    var(--color-night-2);
+}
+
+.process-strip .icon,
+.contact-grid .icon {
+  width: 2rem;
+  height: 2rem;
+  color: var(--color-gold);
+}
+
+.process-strip h2,
+.contact-grid h2 {
+  margin: 3rem 0 0.55rem;
+  color: var(--color-cream);
+  font-family: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  font-size: 1.75rem;
+  line-height: 1.05;
+  letter-spacing: 0;
+}
+
+.process-strip p,
+.contact-grid p {
+  margin: 0;
+  color: rgb(245 234 213 / 68%);
+}
+
+.contact-grid a {
+  color: var(--color-gold);
+  font-weight: 900;
+  text-decoration: none;
+  border-bottom: 1px solid rgb(216 173 93 / 35%);
+}
+
+.contact-grid a:hover,
+.contact-grid a:focus-visible {
+  color: #ffe0a0;
+  border-color: #ffe0a0;
 }
 
 .reservation-form iframe,
@@ -860,6 +1359,16 @@ nav a:hover {
   text-decoration: none;
   border-bottom: 1px solid rgb(216 173 93 / 38%);
   transition: color 180ms ease, border-color 180ms ease;
+}
+
+.icon-link {
+  display: inline-flex;
+  gap: 0.45rem;
+  align-items: center;
+}
+
+.icon-link .icon {
+  font-size: 0.95rem;
 }
 
 .contact-list a:hover,
@@ -986,6 +1495,14 @@ nav a:hover {
     font-size: 5.5rem;
   }
 
+  .hero-planner {
+    position: relative;
+    top: auto;
+    right: auto;
+    width: min(100%, 42rem);
+    margin-top: 2rem;
+  }
+
   .hero-rail {
     position: relative;
     right: auto;
@@ -994,13 +1511,26 @@ nav a:hover {
   }
 
   .experience-section,
+  .visit-flow-section,
   .section-copy,
-  .pours-section {
+  .pours-section,
+  .menu-showcase-section,
+  .events-showcase-section,
+  .page-heading-grid {
     grid-template-columns: 1fr;
   }
 
-  .feature-grid {
+  .feature-grid,
+  .flow-grid {
     grid-column: 1;
+  }
+
+  .flow-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .page-action-panel {
+    max-width: 42rem;
   }
 }
 
@@ -1058,6 +1588,18 @@ nav a:hover {
     font-size: 1rem;
   }
 
+  .hero-planner {
+    padding: 0.9rem;
+  }
+
+  .hero-planner a {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .hero-planner a > .icon:last-child {
+    display: none;
+  }
+
   .actions {
     align-items: stretch;
     flex-direction: column;
@@ -1088,6 +1630,17 @@ nav a:hover {
     grid-template-columns: 1fr;
   }
 
+  .flow-grid,
+  .events-preview,
+  .process-strip,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .flow-card {
+    min-height: 14rem;
+  }
+
   .feature-card {
     min-height: auto;
   }
@@ -1105,6 +1658,27 @@ nav a:hover {
     gap: 0.35rem;
   }
 
+  .menu-showcase-section,
+  .events-showcase-section {
+    gap: 1.5rem;
+  }
+
+  .showcase-panel h2 {
+    font-size: 3.1rem;
+  }
+
+  .bar-snapshot {
+    min-height: 420px;
+  }
+
+  .calendar-card {
+    min-height: 10rem;
+  }
+
+  .calendar-card strong {
+    font-size: 4rem;
+  }
+
   .reservation-cta {
     min-height: 520px;
     padding: 4rem 1rem;
@@ -1118,6 +1692,20 @@ nav a:hover {
     font-size: 3.8rem;
   }
 
+  .section-header h2 {
+    font-size: 2.35rem;
+  }
+
+  .page-followup,
+  .section-header {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .page-followup .actions {
+    width: 100%;
+  }
+
   .feature-band,
   .menu-category {
     grid-template-columns: 1fr;
@@ -1125,6 +1713,10 @@ nav a:hover {
 
   .menu-category {
     gap: 1rem;
+  }
+
+  .menu-category-heading {
+    position: static;
   }
 
   .menu-item-topline {
@@ -1135,6 +1727,19 @@ nav a:hover {
   .event-list-item {
     grid-template-columns: 1fr;
     gap: 0.4rem;
+  }
+
+  .event-date {
+    min-height: auto;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.6rem;
+    align-items: center;
+    text-align: left;
+  }
+
+  .event-date strong {
+    margin: 0;
+    font-size: 1.45rem;
   }
 
   .footer-links {

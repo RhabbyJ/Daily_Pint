@@ -1,19 +1,31 @@
 ---
+import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
 import EventsList from "../components/EventsList.astro";
 import { site } from "../config/site";
 ---
 
 <Layout title={`Events | ${site.name}`} description={`Upcoming events at ${site.name}.`}>
-  <section class="page-heading">
-    <p class="eyebrow">Updated from Google Calendar</p>
-    <h1>Events</h1>
-    <p>Upcoming events are managed by staff in Google Calendar.</p>
+  <section class="page-heading page-heading-grid">
+    <div>
+      <p class="eyebrow">Updated from Google Calendar</p>
+      <h1>Events</h1>
+      <p>Upcoming events appear as a quick list first, with the full public calendar below for deeper planning.</p>
+    </div>
+    <div class="page-action-panel" aria-label="Events notes">
+      <p><Icon name="calendar" />Staff manage the public calendar.</p>
+      <p><Icon name="clock" />Past events are filtered out.</p>
+      <p><Icon name="map-pin" />Locations show when available.</p>
+    </div>
   </section>
 
   <EventsList />
 
   <section class="events-calendar" aria-label={`${site.name} events calendar`}>
+    <div class="section-header">
+      <p class="eyebrow">Full calendar</p>
+      <h2>Browse the complete public schedule.</h2>
+    </div>
     {
       site.googleCalendarEmbedUrl ? (
         <iframe
@@ -31,5 +43,17 @@ import { site } from "../config/site";
         </div>
       )
     }
+  </section>
+
+  <section class="page-followup">
+    <div>
+      <p class="eyebrow">Found your night?</p>
+      <h2>Request a table before the room fills.</h2>
+      <p>Reservation requests go to staff for confirmation, so guests know exactly what to expect.</p>
+    </div>
+    <div class="actions">
+      <a class="button secondary" href="/menu"><Icon name="menu" />View Menu</a>
+      <a class="button" href="/reservations"><Icon name="users" />Request a Reservation</a>
+    </div>
   </section>
 </Layout>

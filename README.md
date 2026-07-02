@@ -68,7 +68,7 @@ You can import `menu-template.csv` into Google Sheets as a starting point.
 
 ## Reservations
 
-Create a Tally form named `Request a Reservation`, publish it, and put its form ID in `PUBLIC_TALLY_FORM_ID`. The site intentionally says “Request a Reservation” because requests are staff-confirmed.
+Create a Tally form named `Request a Reservation`, publish it, and put its form ID in `PUBLIC_TALLY_FORM_ID`. The site intentionally says "Request a Reservation" because requests are staff-confirmed.
 
 Reservation submissions are stored in Tally, not in this website backend.
 

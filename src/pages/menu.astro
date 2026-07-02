@@ -1,15 +1,35 @@
 ---
+import Icon from "../components/Icon.astro";
 import Layout from "../components/Layout.astro";
 import MenuRenderer from "../components/MenuRenderer.astro";
 import { site } from "../config/site";
 ---
 
 <Layout title={`Menu | ${site.name}`} description={`View the current menu for ${site.name}.`}>
-  <section class="page-heading">
-    <p class="eyebrow">Updated from Google Sheets</p>
-    <h1>Menu</h1>
-    <p>Availability and prices can be changed by staff without a code deploy.</p>
+  <section class="page-heading page-heading-grid">
+    <div>
+      <p class="eyebrow">Updated from Google Sheets</p>
+      <h1>Menu</h1>
+      <p>Availability, section order, item order, prices, and tags are controlled by staff from the public menu sheet.</p>
+    </div>
+    <div class="page-action-panel" aria-label="Menu notes">
+      <p><Icon name="check" />Unavailable items stay hidden.</p>
+      <p><Icon name="list" />Categories and items sort from the sheet.</p>
+      <p><Icon name="sparkles" />Tags are customer-facing labels.</p>
+    </div>
   </section>
 
   <MenuRenderer />
+
+  <section class="page-followup">
+    <div>
+      <p class="eyebrow">Planning a night out?</p>
+      <h2>Check events before you pick a table.</h2>
+      <p>Pair the current menu with upcoming events, then send a staff-confirmed reservation request.</p>
+    </div>
+    <div class="actions">
+      <a class="button secondary" href="/events"><Icon name="calendar" />View Events</a>
+      <a class="button" href="/reservations"><Icon name="users" />Request a Reservation</a>
+    </div>
+  </section>
 </Layout>

@@ -1,4 +1,5 @@
 ---
+import Icon from "./Icon.astro";
 import { site } from "../config/site";
 ---
 
@@ -8,7 +9,9 @@ import { site } from "../config/site";
     {site.address && <p>{site.address}</p>}
   </div>
   <div class="footer-links">
-    {site.phone && <a href={`tel:${site.phone}`}>{site.phone}</a>}
-    {site.instagramUrl && <a href={site.instagramUrl}>Instagram</a>}
+    {site.phone && <a class="icon-link" href={`tel:${site.phone}`}><Icon name="phone" />{site.phone}</a>}
+    {site.instagramUrl && <a class="icon-link" href={site.instagramUrl}><Icon name="instagram" />Instagram</a>}
+    <a class="icon-link" href="/events"><Icon name="calendar" />Events</a>
+    <a class="icon-link" href="/reservations"><Icon name="users" />Request a Reservation</a>
   </div>
 </footer>
