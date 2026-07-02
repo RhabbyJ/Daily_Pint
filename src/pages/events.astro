@@ -9,13 +9,13 @@ import { site } from "../config/site";
 <Layout title={`Events | ${site.name}`} description={`Upcoming events at ${site.name}.`}>
   <section class="page-heading page-heading-grid">
     <div>
-      <p class="eyebrow">Updated from Google Calendar</p>
+      <p class="eyebrow">Coming up</p>
       <h1>Events</h1>
-      <p>Upcoming events appear as a quick list first, with a custom calendar view below for deeper planning.</p>
+      <p>See the next nights on the calendar, then choose the one that fits your group.</p>
     </div>
     <div class="page-action-panel" aria-label="Events notes">
-      <p><Icon name="calendar" />Staff manage the public calendar.</p>
-      <p><Icon name="clock" />Past events are filtered out.</p>
+      <p><Icon name="calendar" />Fresh public listings.</p>
+      <p><Icon name="clock" />Upcoming dates first.</p>
       <p><Icon name="map-pin" />Locations show when available.</p>
     </div>
   </section>
@@ -24,8 +24,8 @@ import { site } from "../config/site";
 
   <section class="events-calendar" aria-label={`${site.name} events calendar`}>
     <div class="section-header">
-      <p class="eyebrow">Full calendar</p>
-      <h2>Browse the public schedule without leaving the site.</h2>
+      <p class="eyebrow">Calendar view</p>
+      <h2>Pick the right night at a glance.</h2>
     </div>
     <EventsCalendar />
   </section>

@@ -2,93 +2,90 @@
 
 ## Direction
 
-The redesign turns the MVP into a premium neighborhood bar website while keeping the v1 architecture unchanged: static Astro pages, Cloudflare Pages Functions, Google Sheets menu source, Google Calendar events, and Tally reservation requests.
+The latest redesign makes the site more minimal, lighter, and less technical while preserving the v1 architecture: Astro static pages, Cloudflare Pages Functions, Google Sheets menu data, Google Calendar events, and Tally reservation requests.
 
-The page is meant to feel candlelit, polished, and direct while behaving like a modern product UI. The hero uses the existing bar photo as the first-viewport signal, with large editorial typography, icon-led navigation, and a "Plan your night" panel for menu, events, and staff-confirmed reservations.
+The visual direction is a modern neighborhood bar: warm paper surfaces, sage green accents, editorial type, clear guest paths, and a calmer embedded navigation system. The homepage keeps the bar photo as the first-viewport signal, then moves guests through the practical flow: menu, events, reservation request, and contact.
 
 ## Web Inspiration
 
-- [The Dead Rabbit](https://thedeadrabbit.com/) informed the strong hospitality navigation pattern: menus, opening information, events, and reservations are always easy to find.
-- [Death & Co](https://www.deathandcompany.com/) informed the image-led cocktail bar mood and direct reservation-oriented navigation.
-- [Overstory](https://www.overstory-nyc.com/) informed the elegant, information-rich cocktail bar structure with clear reservation details and venue copy.
-- [Awwwards restaurant category](https://www.awwwards.com/websites/restaurant/) was used as a broader reference for immersive restaurant and bar landing page patterns.
-- [Material Design 3 lists](https://m3.material.io/components/lists/overview) informed the icon-led list rows, leading/trailing affordances, and grouped action panels.
-- [Material Design 3 date pickers](https://m3.material.io/components/date-pickers/overview) informed the compact event date badges and calendar-first mental model.
-- [Apple lists and tables guidance](https://developer.apple.com/design/human-interface-guidelines/lists-and-tables) informed the grouped, scan-friendly page action panels.
-- [Resy](https://resy.com/) informed the events-to-reservation flow: discovery first, then a clear booking/request action.
+- [Navbar Gallery](https://www.navbar.gallery/) informed the smoother text-led navigation with subtle active states.
+- [Awwwards hotel and restaurant websites](https://www.awwwards.com/websites/hotel-restaurant/) informed the image-led hospitality mood and clear conversion paths.
+- [Site Builder Report bar website examples](https://www.sitebuilderreport.com/inspiration/bar-websites) reinforced easy navigation, strong imagery, menu access, and mobile optimization.
+- [Framer restaurant website examples](https://www.framer.com/blog/restaurant-website-design-examples/) informed the lighter editorial landing-page hierarchy.
+- [Material Design 3 lists](https://m3.material.io/components/lists/overview) informed the compact icon rows and scan-friendly repeated content.
 
 ## Palette
 
-- Night green: `#071a18`
-- Deep green: `#0d2520`
-- Cream: `#f5ead5`
-- Paper: `#fff8eb`
-- Gold: `#d8ad5d`
-- Copper: `#b8673f`
-- Wine: `#5a1f2d`
-- Moss: `#2f4436`
+- Background cream: `#f5ecdc`
+- Soft cream: `#efe3d1`
+- Paper: `#fffaf1`
+- Ink: `#1b241e`
+- Muted olive gray: `#687267`
+- Sage: `#586f62`
+- Deep sage: `#23382f`
+- Gold: `#b77d35`
+- Copper: `#a6613d`
+- Wine: `#6b3341`
 
-The palette avoids a one-note theme by balancing dark green, warm cream, amber gold, copper, and wine accents.
+The palette is intentionally lighter than the previous dark-glass version, with enough sage, gold, copper, and wine contrast to avoid a single-hue theme.
 
 ## Typography
 
-- Display: `Cormorant Garamond`, used for hero and section headlines.
-- Interface/body: `Manrope`, used for navigation, body text, buttons, and menu content.
+- Display: `Cormorant Garamond`, used for hero, page, and section headlines.
+- Interface/body: `Manrope`, used for navigation, body text, buttons, lists, and menu content.
 
 The type system uses fixed rem-based sizes with media queries instead of viewport-width font scaling.
 
 ## Motion
 
 - Slow hero image drift for atmosphere.
-- Subtle hero light sweep.
 - Scroll cue motion.
-- Moving marquee strip for bar energy.
 - IntersectionObserver reveal animations on lower landing sections.
 - Button shine and lift hover effects.
-- Menu and text-link hover motion.
+- Menu, card, calendar, and text-link hover motion.
 - `prefers-reduced-motion` disables animation-heavy behavior.
+
+The moving marquee and light sweep were removed to keep the redesign calmer.
 
 ## Interaction System
 
-- Local `Icon.astro` provides consistent inline SVG icons without adding a dependency after npm certificate verification blocked `lucide-astro` installation.
-- Header navigation uses icons plus text for fast scanning.
-- Primary actions use icon and text buttons.
-- Footer and contact actions use compact icon links.
-- Page hero panels summarize the operational model for menu, events, reservations, contact, and 404 recovery.
-- Events use a calendar badge list above the full Google Calendar embed.
-- Menu categories include item counts and price chips.
+- Header navigation is text-led and embedded into the page, with subtle active underlines.
+- Primary actions still use icon and text buttons for clear commands.
+- Footer, contact, page panels, and CTA buttons keep compact icons.
+- Homepage copy is guest-facing instead of implementation-facing.
+- Page action panels are lighter and less card-like.
+- Menu categories keep item counts, compact price chips, and customer-facing tags.
+- Events keep an upcoming list and custom calendar UI, with a lighter detail panel.
+- The reservation path keeps the required `Request a Reservation` wording and staff-confirmed copy.
 
 ## Files Changed
 
-- `src/components/Icon.astro`: added reusable icon primitive.
-- `src/pages/index.astro`: rebuilt landing page structure, plan-your-night panel, customer flow, menu showcase, event showcase, and motion script.
-- `src/pages/menu.astro`: added menu operations panel and follow-up actions.
-- `src/pages/events.astro`: added events operations panel, list-first ordering, calendar header, and follow-up actions.
-- `src/pages/reservations.astro`: added staff-confirmed process strip.
-- `src/pages/contact.astro`: added contact action panel, Instagram action, and contact cards.
-- `src/pages/404.astro`: added useful recovery links.
-- `src/styles/global.css`: replaced the MVP stylesheet with the full visual system, responsive layout, and motion.
-- `src/components/Layout.astro`: added Google Fonts and optional page class support.
-- `src/components/Header.astro`: added active navigation state and icons.
-- `src/components/Footer.astro`: added icon actions for phone, Instagram, events, and reservations.
-- `src/components/MenuRenderer.astro`: improved menu empty/error states and category metadata while still rendering text-only values.
-- `src/components/EventsList.astro`: improved event list rendering with date badges.
+- `src/components/Header.astro`: removed icon-led nav and kept active text navigation.
+- `src/components/Layout.astro`: updated browser theme color for the lighter palette.
+- `src/pages/index.astro`: simplified hero, removed the planner/marquee, and rewrote the homepage flow around guest needs.
+- `src/pages/menu.astro`: softened page copy while preserving current-menu behavior.
+- `src/pages/events.astro`: softened event copy and kept the custom calendar placement.
+- `src/pages/reservations.astro`: kept staff-confirmed language and simplified one operational line.
+- `src/pages/contact.astro`: removed implementation-facing configuration copy.
+- `src/styles/global.css`: rebuilt the lighter visual system, responsive layout, nav, cards, menu, events calendar, footer, and motion states.
 
 ## QA
 
 - `npm run build` passes with Astro check and TypeScript.
-- Verified desktop and mobile home page screenshots in the browser.
-- Verified menu, events, reservations, contact, and 404 pages.
-- Verified menu temporary-unavailable state.
-- Ran a DOM layout audit across home, menu, events, reservations, contact, and 404 at `390x844` and `1280x720`.
-- No horizontal overflow was detected.
-- No clipped checked text or interactive elements were detected.
+- Verified desktop home, menu, events, reservations, and contact pages in the browser.
+- Verified menu renders sample API data, including category, item, price, description, and tag styles.
+- Verified events empty state and custom calendar render from `/api/events`.
+- Verified mobile home, menu, and events pages at `390x844`.
+- Verified narrow mobile route sweep at `320x740` across home, menu, events, reservations, and contact.
+- No horizontal page overflow was detected in the browser checks.
+- Fixed the mobile menu price chip so it stays content-width instead of stretching.
+- Refined the calendar detail panel so empty states do not stretch to the full grid height.
 
 ## V1 Boundaries Preserved
 
 - No database added.
-- No custom backend added beyond the existing Pages Function.
-- No admin dashboard added.
+- No custom admin dashboard added.
+- No payment flow added.
 - Reservation CTA remains `Request a Reservation`.
 - Reservation data still stays in Tally.
 - Menu values continue to render as text, not raw HTML.

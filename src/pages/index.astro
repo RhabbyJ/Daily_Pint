@@ -6,13 +6,12 @@ import { site } from "../config/site";
 
 <Layout title={site.name} description={site.description} pageClass="home-page">
   <section class="hero landing-hero" aria-label={`${site.name} welcome`}>
-    <div class="hero-glow" aria-hidden="true"></div>
     <div class="hero-content hero-intro">
-      <p class="eyebrow">Neighborhood bar / rotating menu / public events</p>
+      <p class="eyebrow">Neighborhood bar</p>
       <h1>{site.name}</h1>
       <p class="hero-lede">
-        {site.description} Check the current menu, see what is coming up, and send
-        a staff-confirmed reservation request before you head over.
+        {site.description} Check tonight's menu, see what is coming up, and request
+        a table when the night calls for one.
       </p>
       <div class="actions hero-actions">
         <a class="button" href="/menu"><Icon name="menu" />View Menu</a>
@@ -20,58 +19,26 @@ import { site } from "../config/site";
         <a class="button secondary" href="/reservations"><Icon name="users" />Request a Reservation</a>
       </div>
     </div>
-
-    <aside class="hero-planner hero-intro" aria-label="Plan your visit">
-      <p class="eyebrow">Plan your night</p>
-      <a href="/menu">
-        <span class="action-icon"><Icon name="menu" /></span>
-        <span><strong>Current menu</strong><small>Drafts, cocktails, and prices from the live sheet.</small></span>
-        <Icon name="arrow-right" />
-      </a>
-      <a href="/events">
-        <span class="action-icon"><Icon name="calendar" /></span>
-        <span><strong>Upcoming events</strong><small>Calendar listings managed by staff.</small></span>
-        <Icon name="arrow-right" />
-      </a>
-      <a href="/reservations">
-        <span class="action-icon"><Icon name="users" /></span>
-        <span><strong>Request a table</strong><small>Requests are confirmed by staff.</small></span>
-        <Icon name="arrow-right" />
-      </a>
-    </aside>
-
-    <div class="hero-rail hero-intro" aria-label="Bar highlights">
-      <p>Walk-ins welcome</p>
-      <p>Live menu updates</p>
-      <p>Public event calendar</p>
-    </div>
     <a class="scroll-cue" href="#visit-flow" aria-label="Explore the bar">
       <span></span>
     </a>
   </section>
 
-  <section class="marquee-strip" aria-label="Daily Pint atmosphere">
-    <div class="marquee-track">
+  <section class="home-strip" aria-label="Daily Pint highlights">
+    <div>
       <span>Fresh drafts</span>
       <span>Classic cocktails</span>
-      <span>Low lights</span>
       <span>Public events</span>
-      <span>Staff-confirmed tables</span>
-      <span>Fresh drafts</span>
-      <span>Classic cocktails</span>
-      <span>Low lights</span>
-      <span>Public events</span>
-      <span>Staff-confirmed tables</span>
     </div>
   </section>
 
   <section id="visit-flow" class="home-section visit-flow-section">
     <div class="section-kicker reveal">Start here</div>
     <div class="section-copy reveal">
-      <h2>Everything guests need, in the order they need it.</h2>
+      <h2>Start with what you need tonight.</h2>
       <p>
-        The site now follows the customer path: choose what to drink, check what is
-        happening, request a table, then find the bar.
+        The essentials stay easy to reach: what is pouring, what is planned,
+        how to request a table, and how to find the bar.
       </p>
     </div>
     <div class="flow-grid">
@@ -79,41 +46,41 @@ import { site } from "../config/site";
         <Icon name="menu" />
         <span>01</span>
         <h3>Menu</h3>
-        <p>Live categories, pricing, and availability from the owner-managed sheet.</p>
+        <p>Current pours, cocktails, plates, prices, and notes.</p>
       </a>
       <a class="flow-card reveal" href="/events">
         <Icon name="calendar" />
         <span>02</span>
         <h3>Events</h3>
-        <p>Upcoming listings first, then the full embedded public calendar.</p>
+        <p>Upcoming nights first, then the full calendar view.</p>
       </a>
       <a class="flow-card reveal" href="/reservations">
         <Icon name="users" />
         <span>03</span>
         <h3>Reservations</h3>
-        <p>A clear request flow that never implies instant confirmation.</p>
+        <p>Send a request. Staff will confirm the details.</p>
       </a>
       <a class="flow-card reveal" href="/contact">
         <Icon name="map-pin" />
         <span>04</span>
         <h3>Contact</h3>
-        <p>Phone, Instagram, address, and map actions when configured.</p>
+        <p>Call, follow, or get directions without digging.</p>
       </a>
     </div>
   </section>
 
   <section class="home-section menu-showcase-section">
     <div class="showcase-panel reveal">
-      <p class="eyebrow">Menu system</p>
-      <h2>Rotating pours without a code deploy.</h2>
+      <p class="eyebrow">Menu</p>
+      <h2>The current board, kept fresh.</h2>
       <p>
-        The owner can change sections, items, prices, tags, and availability from
-        Google Sheets. The public site only shows available rows.
+        Guests see the items that are available now, organized by section with
+        simple prices, descriptions, and helpful tags.
       </p>
       <div class="mini-list" aria-label="Menu capabilities">
-        <p><Icon name="check" /><span>Unavailable items are hidden.</span></p>
-        <p><Icon name="check" /><span>Categories and items follow sheet order.</span></p>
-        <p><Icon name="check" /><span>Tags render as compact labels.</span></p>
+        <p><Icon name="check" /><span>Unavailable items stay off the public menu.</span></p>
+        <p><Icon name="check" /><span>Sections follow the order guests expect.</span></p>
+        <p><Icon name="check" /><span>Tags keep quick choices clear.</span></p>
       </div>
       <a class="text-link" href="/menu">Explore the current menu <Icon name="arrow-right" /></a>
     </div>
@@ -155,16 +122,16 @@ import { site } from "../config/site";
       </div>
     </div>
     <div class="showcase-panel reveal">
-      <p class="eyebrow">Events calendar</p>
-      <h2>A calendar guests can scan before they commit.</h2>
+      <p class="eyebrow">Events</p>
+      <h2>A simple look at what is coming up.</h2>
       <p>
-        Upcoming events appear as a clean list first, with the full public Google
-        Calendar below it for guests who want the complete view.
+        Upcoming events appear as a quick list, with a calendar below for guests
+        who want to choose the right night.
       </p>
       <div class="mini-list" aria-label="Events capabilities">
-        <p><Icon name="clock" /><span>Date and time are formatted for quick scanning.</span></p>
-        <p><Icon name="map-pin" /><span>Location appears when staff adds it.</span></p>
-        <p><Icon name="calendar" /><span>Calendar edits do not require code changes.</span></p>
+        <p><Icon name="clock" /><span>Date and time stay easy to scan.</span></p>
+        <p><Icon name="map-pin" /><span>Location appears when available.</span></p>
+        <p><Icon name="calendar" /><span>The schedule stays current.</span></p>
       </div>
       <a class="text-link" href="/events">See upcoming events <Icon name="arrow-right" /></a>
     </div>
