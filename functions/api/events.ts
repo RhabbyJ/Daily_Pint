@@ -31,37 +31,27 @@ const DEFAULT_TIME_ZONE = "America/Los_Angeles";
 const MAX_EVENTS = 12;
 const ABSOLUTE_MAX_EVENTS = 80;
 const LOOKAHEAD_DAYS = 180;
+const FALLBACK_CALENDAR_EMBED_URL =
+  "https://calendar.google.com/calendar/embed?src=0673718a84d0e8f4461aecf66de222d58a128392c6144aa6dfeb472086b10ed1%40group.calendar.google.com&ctz=America%2FLos_Angeles";
 
 export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
-  const calendarUrl =
-    clean(env.GOOGLE_CALENDAR_ICAL_URL, 500) ||
-    toPublicIcalUrl(clean(env.PUBLIC_GOOGLE_CALENDAR_EMBED_URL, 500));
+  const calendarUrls = getCalendarUrls(env);
   const eventLimit = getEventLimit(request);
 
-  if (!calendarUrl) {
+  if (calendarUrls.length === 0) {
     return json({ error: "Events calendar is not configured" }, 500);
   }
 
   let ics: string;
 
   try {
-    const response = await fetch(calendarUrl, {
-      cf: {
-        cacheEverything: true,
-        cacheTtl: 300,
-      },
-      headers: {
-        "User-Agent": "bar-website-events-fetcher",
-      },
-    });
-
-    if (!response.ok) {
-      return json({ error: "Events calendar source unavailable" }, 502);
-    }
-
-    ics = await response.text();
+    ics = await fetchFirstAvailableCalendar(calendarUrls);
   } catch {
     return json({ error: "Could not fetch events calendar source" }, 502);
+  }
+
+  if (!ics) {
+    return json({ error: "Events calendar source unavailable" }, 502);
   }
 
   const today = startOfUtcDay(new Date());
@@ -110,6 +100,51 @@ export const onRequestGet: PagesFunction<Env> = async ({ env, request }) => {
     }
   );
 };
+
+async function fetchFirstAvailableCalendar(calendarUrls: string[]): Promise<string> {
+  for (const calendarUrl of calendarUrls) {
+    const response = await fetch(calendarUrl, {
+      cf: {
+        cacheEverything: true,
+        cacheTtl: 300,
+      },
+      headers: {
+        "User-Agent": "bar-website-events-fetcher",
+      },
+    });
+
+    if (!response.ok) {
+      continue;
+    }
+
+    const ics = await response.text();
+
+    if (ics.includes("BEGIN:VCALENDAR")) {
+      return ics;
+    }
+  }
+
+  return "";
+}
+
+function getCalendarUrls(env: Env): string[] {
+  const candidates = [
+    clean(env.GOOGLE_CALENDAR_ICAL_URL, 500),
+    clean(env.PUBLIC_GOOGLE_CALENDAR_EMBED_URL, 500),
+    FALLBACK_CALENDAR_EMBED_URL,
+  ];
+  const urls = new Set<string>();
+
+  for (const candidate of candidates) {
+    const calendarUrl = toPublicIcalUrl(candidate);
+
+    if (calendarUrl) {
+      urls.add(calendarUrl);
+    }
+  }
+
+  return Array.from(urls);
+}
 
 function getEventLimit(request: Request): number {
   const url = new URL(request.url);
