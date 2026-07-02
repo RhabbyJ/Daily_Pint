@@ -1,11 +1,12 @@
 ---
+import Icon from "./Icon.astro";
 import { site } from "../config/site";
 
 const navItems = [
-  { href: "/menu", label: "Menu" },
-  { href: "/events", label: "Events" },
-  { href: "/reservations", label: "Request a Reservation" },
-  { href: "/contact", label: "Contact" },
+  { href: "/menu", label: "Menu", icon: "menu" },
+  { href: "/events", label: "Events", icon: "calendar" },
+  { href: "/reservations", label: "Request a Reservation", icon: "users" },
+  { href: "/contact", label: "Contact", icon: "map-pin" },
 ] as const;
 
 const pathname = Astro.url.pathname;
@@ -25,6 +26,7 @@ const isCurrent = (href: string) => (href === "/" ? pathname === "/" : pathname.
           class={isCurrent(item.href) ? "is-active" : undefined}
           aria-current={isCurrent(item.href) ? "page" : undefined}
         >
+          <Icon name={item.icon} />
           {item.label}
         </a>
       ))
