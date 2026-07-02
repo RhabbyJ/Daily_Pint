@@ -136,9 +136,7 @@ function getCalendarUrls(env: Env): string[] {
   const urls = new Set<string>();
 
   for (const candidate of candidates) {
-    const calendarUrl = toPublicIcalUrl(candidate);
-
-    if (calendarUrl) {
+    for (const calendarUrl of toPublicIcalUrls(candidate)) {
       urls.add(calendarUrl);
     }
   }
@@ -381,23 +379,58 @@ function getTimeZoneOffsetMs(date: Date, timeZone: string): number {
   return asUtc - date.getTime();
 }
 
-function toPublicIcalUrl(embedUrl: string): string {
-  if (!embedUrl) {
-    return "";
+function toPublicIcalUrls(value: string): string[] {
+  if (!value) {
+    return [];
   }
 
   try {
-    const url = new URL(embedUrl);
-    const calendarId = url.searchParams.get("src");
+    const url = new URL(value);
 
-    if (!calendarId) {
-      return "";
+    if (url.pathname.includes("/calendar/ical/")) {
+      return withGoogleCalendarHosts(url);
     }
 
-    return `https://calendar.google.com/calendar/ical/${encodeURIComponent(calendarId)}/public/basic.ics`;
+    const calendarId = url.searchParams.get("src") || url.searchParams.get("cid");
+
+    if (!calendarId) {
+      return [];
+    }
+
+    return buildPublicIcalUrls(calendarId);
   } catch {
-    return "";
+    return buildPublicIcalUrls(value);
   }
+}
+
+function buildPublicIcalUrls(calendarId: string): string[] {
+  const id = clean(calendarId, 240);
+
+  if (!id || /[/?#]/.test(id)) {
+    return [];
+  }
+
+  const encodedId = encodeURIComponent(id);
+
+  return [
+    `https://calendar.google.com/calendar/ical/${encodedId}/public/basic.ics`,
+    `https://www.google.com/calendar/ical/${encodedId}/public/basic.ics`,
+  ];
+}
+
+function withGoogleCalendarHosts(url: URL): string[] {
+  const urls = new Set<string>();
+  urls.add(url.toString());
+
+  if (url.hostname === "calendar.google.com") {
+    url.hostname = "www.google.com";
+    urls.add(url.toString());
+  } else if (url.hostname === "www.google.com") {
+    url.hostname = "calendar.google.com";
+    urls.add(url.toString());
+  }
+
+  return Array.from(urls);
 }
 
 function startOfUtcDay(date: Date): Date {
